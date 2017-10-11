@@ -52,6 +52,7 @@ export function createConfig(){
         if (err) {
             return console.error(err);
         }
+        console.log(TEST.filePath);
         console.log("Config file created!");
     });
 }
@@ -61,6 +62,11 @@ export function readConfig(path: string){
     _fse.readFile(path, function (err, data) {
         var x = data.toString();
         TEST.configContent = x;
-        console.log("hi")
+        TEST.filePath = x;
     });
+}
+
+export function setConfig(userpath :string){
+    TEST.filePath = userpath;
+    createConfig();
 }

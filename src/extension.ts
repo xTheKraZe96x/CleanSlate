@@ -15,7 +15,6 @@ export function activate(context: ExtensionContext) {
     commands.registerCommand('extension.cleanSlate', () => {
         rw.Parse();
         createFile();
-        createConfig();
     });
 
     context.subscriptions.push(controller);

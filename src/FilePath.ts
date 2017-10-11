@@ -1,4 +1,5 @@
 import { window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
+import { createConfig, setConfig } from './Utilities'
 import { TEST } from './global';
 import { ReadWrite, CleanSlateController } from './Controller';
 
@@ -10,7 +11,7 @@ export function FilePath(){
     //If configFile content is empty then do this 
     if(!TEST.fileExists){
         vscode.window.showInputBox({prompt: 'Please type your desired path for the output file'})
-        .then(path => TEST.filePath = path);
+        .then(path => setConfig(path));
     }
     else{
         //console.log(x + " is the current output file path");
