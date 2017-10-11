@@ -1,13 +1,19 @@
 import {window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
 import { TEST } from './global';
 
+//TODO: clear white space in the strings.
+
+
+
 export class ReadWrite {
+
+
+    ///<summary>
+    /// Parses the current document and outputs a markdown file.
+    ///</summary>
     public Parse() {
 
         var outputString: string[];
-
-
-
 
         let editor = window.activeTextEditor;
         let doc = editor.document;
@@ -24,27 +30,42 @@ export class ReadWrite {
 
                 var hldr = element.substring(i+1, j);
 
-                switch (element.substring(i+1, j)) {
-                    case "header":
-                        this.addITall(array.indexOf(element) , '##', array);
-                        break;
-                    case "code":
-                        this.codeBraces(array.indexOf(element), '```\r\n', array);
-                        break;
+                if (hldr.includes('param') && !hldr.includes('/')) {
+                    this.parameters(array.indexOf(element), array);
 
+
+
+                } else {
+                    switch (hldr) {
+                        case "summary":
+                            this.addITall(array.indexOf(element) , '##', array);
+                            break;
+                        case "example":
+                            this.codeBraces(array.indexOf(element), '>', array);
+                            break;
+    
+                    }
                 }
-
             }
         });
-
-
     }
-
-
+    
+    ///<summary>
+    /// Parses the summary tag.
+    ///</summary>
     public addITall(num: number, str: string, array: string[]) {
         var flag: boolean = true
         var string = str;
         var i = num;
+
+        var j = array[i].lastIndexOf('>');
+
+        if (j !== array[i].length) {
+            var temp = array[i].slice(0, array[i].length - 1);
+
+            string += temp.substr(j + 1);
+            console.log(string);
+        }
 
         while(flag) {
             i++;
@@ -53,31 +74,140 @@ export class ReadWrite {
                 string += '\n';
                 flag = false;
             } else if (array[i].startsWith('///')) {
-                string += ' ' + array[i].substring(3);
+                                var temp = array[i].slice(0, array[i].length - 1);
+                string += temp.substring(3);
             }
         }
         
-        TEST.fileInfo.push(string) ;
+        TEST.fileInfo.push(string);
     }
 
-
+    ///<summary>
+    /// specifically for code and example tags
+    ///</summary>
     public codeBraces(num: number, str: string, array: string[]) {
         var flag: boolean = true
+        var codeBlock: boolean = false;
         var string = str;
         var i = num;
+
+        // Checks to see if there is more to the inital string
+        var j = array[i].lastIndexOf('>');
+
+        if (j !== array[i].length) {
+            var temp = array[i].slice(0, array[i].length - 1);
+            console.log(temp);
+
+            string += temp.substr(j + 1);
+        }
+
+
 
         while(flag) {
             i++;
 
-            if( array[i].startsWith('///') && array[i].includes('</')) {
-                string += '\n```\r\n';
+            if( array[i].startsWith('///') && array[i].includes('</example')) {
+                string += '\n';
                 flag = false;
+            } else if(array[i].startsWith('///') && array[i].includes('<code>')) {
+                string += '\n```\r\n';
+                codeBlock = true;
             } else {
-                string +=  '\n' + array[i];
+                var temp = array[i].slice(0, array[i].length - 1);
+                string += temp.substring(3);
+            }
+
+            while(codeBlock) {
+                i++;
+                if( array[i].startsWith('///') && array[i].includes('</code')) {
+                    string += '\n```\r\n';
+                    codeBlock = false;
+                } else {
+                    string += array[i].substring(3);
+                }
             }
         }
         
-        TEST.fileInfo.push(string) ;
+        TEST.fileInfo.push(string);
+    }
+
+
+    ///<summary>
+    /// Cycles through parameters and fills the fileinfo
+    ///</summary>
+    parameters(num: number, array: string[]) {
+        var i = num;
+        var string = 'Parameter | Description \n --------|--------\n';
+
+        var x = array[i].indexOf('=');
+        var y = array[i].indexOf('>');
+
+        if(!this.checkParamExists(array[i].substring(x+1,y))) {
+
+            var flag: boolean = true;
+            var extraParams: boolean = true;
+
+            while(extraParams) {
+                string += this.paramTitle(array, i);
+                while(flag) {
+                    i++;
+                    if( array[i].startsWith('///') && array[i].includes('</')) {
+                        flag = false;
+                    } else {
+                        var temp = array[i].slice(0, array[i].length - 1);
+                        string += temp.substring(3);
+                    }
+                }
+
+                if (array[i+1].includes('param')) {
+                    i++;
+                    flag = true;
+                    string += '\r\n'
+                } else {
+                    extraParams = false;
+                }
+            }
+            TEST.fileInfo.push(string);
+        }
+
+    }
+
+    ///<summary>
+    /// Checks if the string exists in the fileInfo
+    ///</summary>
+    checkParamExists(checkVal: string): boolean {
+        var retVal: boolean = false;
+
+        TEST.fileInfo.forEach(element => {
+            if(element.includes(checkVal)) {
+                retVal = true;
+            }
+        });
+
+        return retVal;
+    }
+
+    ///<summary>
+    /// Grabs the title of the parameter
+    ///</summary>
+    paramTitle(array: string[], i: number): string {
+        var retVal = '';
+
+        var x = array[i].indexOf('=');
+        var y = array[i].indexOf('>');
+
+        retVal += array[i].substring(x+1, y) + '|';
+
+        var j = array[i].lastIndexOf('>');
+        
+        if (j !== array[i].length) {
+            var temp = array[i].slice(0, array[i].length - 1);
+            console.log(temp);
+
+            retVal += temp.substr(j + 1);
+        }
+
+        return retVal;
     }
 
     
@@ -123,8 +253,6 @@ export class CleanSlateController {
             this._statusBarItem.hide();
         }
     }
-
-
 
     dispose() {
         this._disposable.dispose();
