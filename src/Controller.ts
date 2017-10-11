@@ -1,5 +1,5 @@
 import {window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
-import { TEST } from './global';
+import { Core } from './global';
 
 //TODO: clear white space in the strings.
 
@@ -79,7 +79,7 @@ export class ReadWrite {
             }
         }
         
-        TEST.fileInfo.push(string);
+        Core.fileInfo.push(string);
     }
 
     ///<summary>
@@ -128,7 +128,7 @@ export class ReadWrite {
             }
         }
         
-        TEST.fileInfo.push(string);
+        Core.fileInfo.push(string);
     }
 
 
@@ -167,7 +167,7 @@ export class ReadWrite {
                     extraParams = false;
                 }
             }
-            TEST.fileInfo.push(string);
+            Core.fileInfo.push(string);
         }
 
     }
@@ -178,7 +178,7 @@ export class ReadWrite {
     checkParamExists(checkVal: string): boolean {
         var retVal: boolean = false;
 
-        TEST.fileInfo.forEach(element => {
+        Core.fileInfo.forEach(element => {
             if(element.includes(checkVal)) {
                 retVal = true;
             }
