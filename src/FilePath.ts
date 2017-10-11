@@ -1,22 +1,24 @@
-import { window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
+import { languages, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
 import { createConfig, setConfig } from './Utilities'
-import { TEST } from './global';
+import { Core } from './global';
 import { ReadWrite, CleanSlateController } from './Controller';
 
 export function FilePath(){
     var path = "";
     var vscode = require('vscode');  
-    var x = TEST.configContent
+    var x = Core.configContent
     
+    window.showInformationMessage('hello', ...['Yes', 'No'])
+
     //If configFile content is empty then do this 
-    if(!TEST.fileExists){
+    // if(!Core.fileExists){
         vscode.window.showInputBox({prompt: 'Please type your desired path for the output file'})
         .then(path => setConfig(path));
-    }
-    else{
-        //console.log(x + " is the current output file path");
-        vscode.window.showInformationMessage(x + " is the current output file path");
-    }
+    // }
+    // else{
+    //     //console.log(x + " is the current output file path");
+    //     vscode.window.showInformationMessage(x + " is the current output file path");
+    // }
 }
 
 export function GetCurrFile(){
@@ -24,5 +26,5 @@ export function GetCurrFile(){
     var i = temp.lastIndexOf('\\');
     var j = temp.lastIndexOf('.');
     i++;
-    TEST.fileName =  window.activeTextEditor.document.fileName.toString().substring(i, j);
+    Core.fileName =  window.activeTextEditor.document.fileName.toString().substring(i, j);
 }
