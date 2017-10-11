@@ -28,8 +28,7 @@ export class FileProperties {
 
 
     createFile() {    
-
-        this._fse.writeFile('D:\\file.txt', TEST.fileInfo.join('\n'), function(err) {
+        this._fse.writeFile(TEST.filePath, TEST.fileInfo.join('\n'), function(err) {
             if (err) {
                 return console.error(err);
             }

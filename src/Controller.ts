@@ -6,9 +6,6 @@ export class ReadWrite {
 
         var outputString: string[];
 
-
-
-
         let editor = window.activeTextEditor;
         let doc = editor.document;
         let docContent = doc.getText();
@@ -33,11 +30,8 @@ export class ReadWrite {
                         break;
 
                 }
-
             }
         });
-
-
     }
 
 
@@ -123,8 +117,6 @@ export class CleanSlateController {
             this._statusBarItem.hide();
         }
     }
-
-
 
     dispose() {
         this._disposable.dispose();
