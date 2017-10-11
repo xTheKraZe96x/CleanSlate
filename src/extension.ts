@@ -1,23 +1,21 @@
 import { window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
-import { FileProperties }  from './Utilities';
+import { readFile, checkExists, createFile, createConfig, readConfig} from './Utilities'
 import { TEST } from './global';
-import { FilePath } from './FilePath'
+import { FilePath, GetCurrFile } from './FilePath'
 import { ReadWrite, CleanSlateController } from './Controller';
 
 
 export function activate(context: ExtensionContext) {
-   
-    FilePath();
+
+    checkExists(TEST.configFile);
+    GetCurrFile();
     let controller = new CleanSlateController();
-    let test = new FileProperties();
     let rw = new ReadWrite();
 
     commands.registerCommand('extension.cleanSlate', () => {
-
-        //path.setPath();
         rw.Parse();
-        test.createFile();
-
+        createFile();
+        createConfig();
     });
 
     context.subscriptions.push(controller);
