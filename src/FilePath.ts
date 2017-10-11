@@ -3,28 +3,51 @@ import { createConfig, setConfig } from './Utilities'
 import { Core } from './global';
 import { ReadWrite, CleanSlateController } from './Controller';
 
+///<summary>
+/// Function FilePath
+/// Detects if a configFile has been created or not
+///      If not created -> Give the user options to selection where they would like to save their markdown document
+///                         and create a config file, if they don't select, defaults output file to root drive
+///</summary>
 export function FilePath(){
-    var path = "";
-    var vscode = require('vscode');  
+    var path = ""; 
     var x = Core.configContent
     
-    window.showInformationMessage('hello', ...['Yes', 'No'])
-
-    //If configFile content is empty then do this 
-    // if(!Core.fileExists){
-        vscode.window.showInputBox({prompt: 'Please type your desired path for the output file'})
-        .then(path => setConfig(path));
-    // }
-    // else{
-    //     //console.log(x + " is the current output file path");
-    //     vscode.window.showInformationMessage(x + " is the current output file path");
-    // }
+    //If configFile has not been created then do this 
+    if(!Core.fileExists){
+        window.showInformationMessage('Do you want to change the default location of the output file', ...['Yes'])
+        .then(val => userSelection(val))
+    }
+    else{
+        window.showInformationMessage(x + " is the current output file path");
+    }
 }
 
+///<summary>
+/// Function GetCurrFile
+/// Fetches the name of current document that is open in VSCode Text Editor and sets fileName to it's name 
+/// without the extension
+///</summary>
 export function GetCurrFile(){
     var temp =  window.activeTextEditor.document.fileName.toString();
     var i = temp.lastIndexOf('\\');
     var j = temp.lastIndexOf('.');
     i++;
     Core.fileName =  window.activeTextEditor.document.fileName.toString().substring(i, j);
+}
+
+///<summary>
+/// Function userSelection
+/// Responsible for getting the users selection based on if they would like to save output file in their own directory
+/// or allow the extension to default it's location to the root drive
+///</summary>
+function userSelection(val: string){
+    if(!val){
+        window.showInformationMessage("Your output file location has been set to: " + Core.outputDefault);
+        Core.filePath = Core.outputDefault;
+    }
+    else{
+        window.showOpenDialog({canSelectFolders: true, openLabel: "Select a directory for output file"})
+        .then(path => setConfig(path));
+    }
 }
