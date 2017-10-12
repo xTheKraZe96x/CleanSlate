@@ -12,7 +12,7 @@ export function activate(context: ExtensionContext) {
     FilePath();
     let controller = new CleanSlateController();
     let rw = new ReadWrite();
-
+5
     commands.registerCommand('extension.cleanSlate', () => {
         rw.Parse();
         createFile();

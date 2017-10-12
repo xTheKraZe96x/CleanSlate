@@ -242,7 +242,7 @@ export class CleanSlateController {
 
         let doc = editor.document;
 
-        if (doc.languageId === "markdown") {
+        if (doc.languageId === "csharp") {
 
             this._statusBarItem.command = 'extension.cleanSlate';
 

@@ -24,10 +24,10 @@ export function checkExists(path: string){
         }
 
         if(Core.fileExists){
-            readConfig(Core.configFile);
-        }
-        else{
-            FilePath();
+            readConfig(fd.toString());
+        } else {
+            window.showInformationMessage("Your output file location has been set to: " + Core.outputDefault);
+            Core.filePath = Core.outputDefault;
         }
     });
 }
@@ -58,12 +58,15 @@ export function createConfig(){
 }
 
 export function readConfig(path: string){
-    var _fse = require('fs');
-    _fse.readFile(path, function (err, data) {
-        var x = data.toString();
-        Core.configContent = x;
-        Core.filePath = x;
-    });
+    Core.filePath = path;
+    window.showInformationMessage("Your output file location has been set to: " + Core.filePath);
+    console.log(Core.filePath);
+    // var _fse = require('fs');
+    // _fse.readFile(path, function (err, data) {
+    //     var x = data.toString();
+    //     Core.configContent = x;
+    //     Core.filePath = x;
+    // });
 }
 
 export function setConfig(userpath :Uri[]){

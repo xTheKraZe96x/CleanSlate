@@ -1,5 +1,5 @@
 import { languages, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
-import { createConfig, setConfig } from './Utilities'
+import { createConfig, setConfig, checkExists } from './Utilities'
 import { Core } from './global';
 import { ReadWrite, CleanSlateController } from './Controller';
 
@@ -39,8 +39,7 @@ export function GetCurrFile(){
 ///</summary>
 function userSelection(val: string){
     if(!val){
-        window.showInformationMessage("Your output file location has been set to: " + Core.outputDefault);
-        Core.filePath = Core.outputDefault;
+        checkExists(Core.configFile);
     }
     else{
         window.showOpenDialog({canSelectFolders: true, openLabel: "Select Folder"})
