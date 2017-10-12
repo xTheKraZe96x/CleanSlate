@@ -21,11 +21,16 @@ export function ParseAssembly() {
 /// Parse through each file
 /// Create Files
 ///</summary>
+///<param name="file">
+/// Assembly file's contents.
+///</param>
+///<param name="path">
+/// The default path to look within for files.
+///</param>
 export function AssemblyArray(file: string[], path: string) {
     var i = path.indexOf('Assembly');
     var j = 0;
     assemblyPath = path.substring(0, i);
-    console.log(assemblyPath);
 
     file.forEach(element => {
         if(element.includes('.cs') && element.includes('Include=')) {
@@ -44,6 +49,9 @@ export function AssemblyArray(file: string[], path: string) {
 /// <summary>
 /// Verifies the Assembly file that was selected.
 /// </summary>
+/// <param name="path">
+/// File path the user selected.
+/// </param>
 function checkFile(path: Uri[]) {
     if(path[0].fsPath.includes('Assembly')) {
         readFile(path[0].fsPath);
@@ -55,6 +63,12 @@ function checkFile(path: Uri[]) {
 ///<summary>
 /// Parses the current document and outputs a markdown file.
 ///</summary>
+///<param name="file">
+/// The file to parse through
+///</param>
+///<param name="i">
+/// Name of the file being processed.
+///</param>
 export function ParseAndGen(file: string[], i: string) {
     var outputString: string[] = [];
 
@@ -100,6 +114,15 @@ export function ParseAndGen(file: string[], i: string) {
 ///<summary>
 /// Parses the summary tag.
 ///</summary>
+///<param name="num">
+/// The current spot at the array being used to parse the line
+///</param>
+///<param name="str">
+/// Header values for the line
+///</param>
+///<param name="array">
+/// The file broken into array form
+///</param>
 function addITall(num: number, str: string, array: string[]): string {
     var flag: boolean = true
     var string = str;
@@ -131,6 +154,15 @@ function addITall(num: number, str: string, array: string[]): string {
 ///<summary>
 /// specifically for code and example tags
 ///</summary>
+///<param name="num">
+/// The current spot at the array being used to parse the line
+///</param>
+///<param name="str">
+/// Header values for the line
+///</param>
+///<param name="array">
+/// The file broken into array form
+///</param>
 function codeBraces(num: number, str: string, array: string[]): string {
     var flag: boolean = true
     var codeBlock: boolean = false;
@@ -178,6 +210,12 @@ function codeBraces(num: number, str: string, array: string[]): string {
 ///<summary>
 /// Cycles through parameters and fills the fileinfo
 ///</summary>
+///<param name="num">
+/// The current spot at the array being used to parse the line
+///</param>
+///<param name="array">
+/// The file broken into array form
+///</param>
 function parameters(num: number, array: string[]): string {
     var i = num;
     var string = 'Parameter | Description \n --------|--------\n';
@@ -218,6 +256,9 @@ function parameters(num: number, array: string[]): string {
 ///<summary>
 /// Checks if the string exists in the fileInfo
 ///</summary>
+///<param name="checkVal">
+/// Value to check for within the current file.
+///</param>
 function checkParamExists(checkVal: string): boolean {
     var retVal: boolean = false;
 
@@ -233,6 +274,12 @@ function checkParamExists(checkVal: string): boolean {
 ///<summary>
 /// Grabs the title of the parameter
 ///</summary>
+///<param name="i">
+/// The current spot at the array being used to parse the line
+///</param>
+///<param name="array">
+/// The file broken into array form
+///</param>
 function paramTitle(array: string[], i: number): string {
     var retVal = '';
 

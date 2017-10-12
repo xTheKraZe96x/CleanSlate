@@ -1,7 +1,7 @@
-///<header>
-/// Global Variables
-///</header>
-import {ExtensionContext} from 'vscode'
+import { ExtensionContext } from 'vscode'
+///<summary>
+/// Core variables used throughout the extension
+///</summay>
 export namespace Core {
     export var counter: number = 0;
     export var fileInfo: string[] = [];

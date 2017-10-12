@@ -48,6 +48,15 @@ export class ReadWrite {
     ///<summary>
     /// Parses the summary tag.
     ///</summary>
+    ///<param name="num">
+    /// The current spot at the array being used to parse the line
+    ///</param>
+    ///<param name="str">
+    /// Header values for the line
+    ///</param>
+    ///<param name="array">
+    /// The file broken into array form
+    ///</param>
     public addITall(num: number, str: string, array: string[]) {
         var flag: boolean = true
         var string = str;
@@ -80,6 +89,15 @@ export class ReadWrite {
     ///<summary>
     /// specifically for code and example tags
     ///</summary>
+    ///<param name="num">
+    /// The current spot at the array being used to parse the line
+    ///</param>
+    ///<param name="str">
+    /// Header values for the line
+    ///</param>
+    ///<param name="array">
+    /// The file broken into array form
+    ///</param>
     public codeBraces(num: number, str: string, array: string[]) {
         var flag: boolean = true
         var codeBlock: boolean = false;
@@ -128,6 +146,12 @@ export class ReadWrite {
     ///<summary>
     /// Cycles through parameters and fills the fileinfo
     ///</summary>
+    ///<param name="num">
+    /// The current spot at the array being used to parse the line
+    ///</param>
+    ///<param name="array">
+    /// The file broken into array form
+    ///</param>
     parameters(num: number, array: string[]) {
         var i = num;
         var string = 'Parameter | Description \n --------|--------\n';
@@ -166,8 +190,11 @@ export class ReadWrite {
     }
 
     ///<summary>
-    /// Checks if the string exists in the fileInfo
+    /// Checks if the string exists in the fileInfo, returns boolean.
     ///</summary>
+    ///<param name="checkVal">
+    /// Value to check for within the current file.
+    ///</param>
     checkParamExists(checkVal: string): boolean {
         var retVal: boolean = false;
 
@@ -181,8 +208,14 @@ export class ReadWrite {
     }
 
     ///<summary>
-    /// Grabs the title of the parameter
+    /// Grabs the title of the parameter, returns the parameter.
     ///</summary>
+    ///<param name="i">
+    /// The current spot at the array being used to parse the line
+    ///</param>
+    ///<param name="array">
+    /// The file broken into array form
+    ///</param>
     paramTitle(array: string[], i: number): string {
         var retVal = '';
 
@@ -261,7 +294,7 @@ export class CleanSlateController {
 
     ///<summary>
     /// Handles the event to show the button on it being the active window.
-    ///</summay>
+    ///</summary>
     private _onEvent() {
         this.showButton();
     }

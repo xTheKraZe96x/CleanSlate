@@ -16,7 +16,7 @@
             "title": "CleanSlate"
         }, {
             "command": "extension.cleanSlate-projGen",
-            "title": "CleanSlate Generate Project"
+            "title": "CleanSlate GenerateProj"
         },{
             "command": "extension.cleanSlate-changepath",
             "title": "CleanSlate ChangePath"
