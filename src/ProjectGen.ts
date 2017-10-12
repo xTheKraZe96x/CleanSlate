@@ -8,11 +8,19 @@ var assemblyPath: string;
 export var filesSkipped: string[] = [];
 export var fileLocations: string[] = [];
 
+///<summary>
+/// Open a dialog box to save the Assembly path.
+///</summary>
 export function ParseAssembly() {
     window.showOpenDialog({canSelectFiles: true, openLabel: "Select Assembly File"})
     .then(path => checkFile(path));
 }
 
+///<summary>
+/// Create the array of File Locations
+/// Parse through each file
+/// Create Files
+///</summary>
 export function AssemblyArray(file: string[], path: string) {
     var i = path.indexOf('Assembly');
     var j = 0;
@@ -30,12 +38,12 @@ export function AssemblyArray(file: string[], path: string) {
 
     fileLocations.forEach(element => {
         projectFile(assemblyPath + element);
-    });
-
-    LogFile(assemblyPath);
-    
+    }); 
 }
 
+/// <summary>
+/// Verifies the Assembly file that was selected.
+/// </summary>
 function checkFile(path: Uri[]) {
     if(path[0].fsPath.includes('Assembly')) {
         readFile(path[0].fsPath);
@@ -43,8 +51,6 @@ function checkFile(path: Uri[]) {
         window.showInformationMessage("Assembly File required to generate markdown files.");
     }
 }
-
-
 
 ///<summary>
 /// Parses the current document and outputs a markdown file.
@@ -86,9 +92,9 @@ export function ParseAndGen(file: string[], i: string) {
         createProjFile(outputString, i.substring(l+1, x));
     } else {
         filesSkipped.push(i.substring(l+1, x));
+        Core.counter++;
     } 
 
-    Core.counter++;
 }
 
 ///<summary>
@@ -141,8 +147,6 @@ function codeBraces(num: number, str: string, array: string[]): string {
         string += temp.substr(j + 1);
     }
 
-
-
     while(flag) {
         i++;
 
@@ -170,7 +174,6 @@ function codeBraces(num: number, str: string, array: string[]): string {
     
     return string;
 }
-
 
 ///<summary>
 /// Cycles through parameters and fills the fileinfo
@@ -249,7 +252,3 @@ function paramTitle(array: string[], i: number): string {
 
     return retVal;
 }
-
-
-
-

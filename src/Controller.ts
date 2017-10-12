@@ -207,14 +207,15 @@ export class ReadWrite {
         return retVal;
     }
  }
-    
+
+///<summary>
+/// Used to monitor status bar icon
+///</summary>
 export class CleanSlateController {
     private _disposable: Disposable;
     private _statusBarItem: StatusBarItem;
 
-
     constructor() {
-
         let subscriptions: Disposable[] = [];
 
         window.onDidChangeTextEditorSelection(this._onEvent, this, subscriptions);
@@ -223,6 +224,10 @@ export class CleanSlateController {
         this._disposable = Disposable.from(...subscriptions);
     }
 
+    ///<summary>
+    /// Creates the status bar icon
+    /// Sets it up to react to a command.
+    ///</summary>
     showButton() {
         if (!this._statusBarItem) {
             this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
@@ -249,11 +254,18 @@ export class CleanSlateController {
         }
     }
 
+    ///<summary>
+    /// Disposes of unused Resources
+    ///</summary>
     dispose() {
         this._disposable.dispose();
         this._statusBarItem.dispose();
     }
 
+
+    ///<summary>
+    /// Handles the event to show the button on it being the active window.
+    ///</summay>
     private _onEvent() {
         this.showButton();
     }

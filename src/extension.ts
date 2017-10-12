@@ -19,7 +19,7 @@ export function activate(context: ExtensionContext) {
         createFile();
     });
 
-    commands.registerCommand('extension.cleanSlate-ProjGen', () => {
+    commands.registerCommand('extension.cleanSlate-projGen', () => {
         // TODO:    open prompt for Assembly-CSHarp
         //          if actual Assembly-CSharp   -> parse
         //          if not                      -> leave with window saying not correct file.
@@ -33,10 +33,6 @@ export function activate(context: ExtensionContext) {
         
         //rw.Parse();
     });
-
-    context.globalState.update('test', 'test');
-    console.log(context.globalState);
-    console.log(context.globalState.get('test'));
 
     commands.registerCommand('extension.cleanSlate-markdown', () => {
         rw.Parse();
