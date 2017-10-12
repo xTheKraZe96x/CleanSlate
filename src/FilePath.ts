@@ -9,8 +9,10 @@ import { ReadWrite, CleanSlateController } from './Controller';
 ///      If not created -> Give the user options to selection where they would like to save their markdown document
 ///                         and create a config file, if they don't select, defaults output file to root drive
 ///</summary>
-export function FilePath() {
+export function FilePath(context: ExtensionContext) {
     // if(!Core.fileExists){
+        context.globalState.update('filePath', Core.filePath);
+        console.log(context.globalState.get('filePath'));
         window.showInformationMessage('Do you want to change the default location of the output file', ...['Yes'])
         .then(val => userSelection(val))
     // }
@@ -45,4 +47,9 @@ function userSelection(val: string){
         window.showOpenDialog({canSelectFolders: true, openLabel: "Select Folder"})
         .then(path => setConfig(path));
     }
+}
+
+export function ShowPath(){
+    var temp = Core.filePath
+    window.showInformationMessage('Current output file path is: ' + temp)
 }
