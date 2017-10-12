@@ -3,11 +3,7 @@ import { Core } from './global';
 
 //TODO: clear white space in the strings.
 
-
-
 export class ReadWrite {
-
-
     ///<summary>
     /// Parses the current document and outputs a markdown file.
     ///</summary>
@@ -210,8 +206,6 @@ export class ReadWrite {
 
         return retVal;
     }
-
-    
  }
     
 export class CleanSlateController {

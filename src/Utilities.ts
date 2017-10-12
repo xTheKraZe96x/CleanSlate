@@ -1,17 +1,59 @@
 import { Core } from './global';
 import { FilePath } from './FilePath'
+import { AssemblyArray, ParseAndGen, fileLocations, filesSkipped } from './ProjectGen'
 import { Uri, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
 
 export function readFile(path: string){
     var _fse = require('fs');
     _fse.readFile(path, function (err, data) {
-        Core.fileInfo = data.toString().split("\n");
-
-        for(let i in Core.fileInfo) {
-            console.log(Core.fileInfo[i]);
-        }
+        AssemblyArray(data.toString().split("\n"), path);
     });
 }
+
+export function projectFile(path: string) {
+    var _fse = require('fs');
+    _fse.readFile(path, function (err, data) {
+        ParseAndGen(data.toString().split("\n"), path);
+    });
+}
+
+export function createProjFile(content: string[], fileName: string) {
+    var _fse = require('fs');    
+    var tempFile = Core.filePath + '_' + fileName + Core.fileType;
+    console.log(tempFile);
+    _fse.writeFile(tempFile, content.join('\n'), function(err) {
+        if (err) {
+            return console.error(err);
+        }
+        Core.counter++;
+        console.log("File created!");
+    });
+
+    LogFile(Core.filePath);
+}
+
+
+export function LogFile(path: string){
+    var _fse = require('fs');
+    _fse.open(path + 'log.txt', 'w+', function(err, fd) {
+        if (err) {
+            if(err.code === 'ENOENT') {
+
+            } 
+        }
+        _fse.readFile(fd , function(err, data) {
+            _fse.writeFile(fd, filesSkipped.join('\n\r') ,function(err){
+                // window.showTextDocument()
+            });
+        });
+
+        
+    });
+}
+
+
+
+
 
 export function checkExists(path: string){
     var _fse = require('fs');
@@ -24,7 +66,13 @@ export function checkExists(path: string){
         }
 
         if(Core.fileExists){
-            readConfig(fd.toString());
+            _fse.readFile(fd, function(err, data) {
+                readConfig(data.toString());
+            });
+
+
+
+            // readConfig();
         } else {
             window.showInformationMessage("Your output file location has been set to: " + Core.outputDefault);
             Core.filePath = Core.outputDefault;
