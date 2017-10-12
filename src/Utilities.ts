@@ -6,7 +6,6 @@ export function readFile(path: string){
     var _fse = require('fs');
     _fse.readFile(path, function (err, data) {
         Core.fileInfo = data.toString().split("\n");
-        // console.log("Asynchronous read: " + data.toString());
 
         for(let i in Core.fileInfo) {
             console.log(Core.fileInfo[i]);
@@ -35,7 +34,7 @@ export function checkExists(path: string){
 
 export function createFile(){
     var _fse = require('fs');    
-    var tempFile = Core.filePath + Core.fileName + Core.fileType;
+    var tempFile = Core.filePath + '_' + Core.fileName + Core.fileType;
     console.log(tempFile);
     _fse.writeFile(tempFile, Core.fileInfo.join('\n'), function(err) {
         if (err) {
@@ -68,6 +67,13 @@ export function readConfig(path: string){
 }
 
 export function setConfig(userpath :Uri[]){
-    Core.filePath = userpath[0].fsPath;
+    //check if undefined.
+    var temp = userpath[0].fsPath;
+
+    if(!temp.endsWith('\\')) {
+        temp += '\\';
+    }
+
+    Core.filePath = temp;
     createConfig();
 }

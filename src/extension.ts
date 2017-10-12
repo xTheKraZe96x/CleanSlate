@@ -7,8 +7,9 @@ import { ReadWrite, CleanSlateController } from './Controller';
 
 export function activate(context: ExtensionContext) {
 
-    checkExists(Core.configFile);
+    // checkExists(Core.configFile);
     GetCurrFile();
+    FilePath();
     let controller = new CleanSlateController();
     let rw = new ReadWrite();
 
