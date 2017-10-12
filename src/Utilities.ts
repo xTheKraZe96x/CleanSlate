@@ -3,6 +3,9 @@ import { FilePath } from './FilePath'
 import { AssemblyArray, ParseAndGen, fileLocations, filesSkipped } from './ProjectGen'
 import { Uri, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
 
+///<summary>
+/// Reads the Assembly file to start the process of 
+///</summary>
 export function readFile(path: string){
     var _fse = require('fs');
     _fse.readFile(path, function (err, data) {
@@ -10,6 +13,9 @@ export function readFile(path: string){
     });
 }
 
+///<summary>
+/// Reads the file in to parse it
+///</summary>
 export function projectFile(path: string) {
     var _fse = require('fs');
     _fse.readFile(path, function (err, data) {
@@ -17,61 +23,39 @@ export function projectFile(path: string) {
     });
 }
 
+///<summary>
+/// Creates the file, updates variables to check if last file updated.
+///</summary>
 export function createProjFile(content: string[], fileName: string) {
     var _fse = require('fs');    
-    var tempFile = Core.filePath + '_' + fileName + Core.fileType;
-    // console.log(tempFile);
+    var tempFile = Core.context.globalState.get('filePath') + '_' + fileName + Core.fileType;
+
     _fse.writeFile(tempFile, content.join('\n'), function(err) {
         if (err) {
             return console.error(err);
         }
         Core.counter++;
-        // console.log("File created!");
+
         console.log('fLoc length' + fileLocations.length + ' | ' + Core.counter);
         
          if(Core.counter === fileLocations.length) {
-            LogFile(Core.filePath);
+            LogUncompleted();
          }
-
-
     });
-
-
-    
-
-  
 }
 
-
-export function LogFile(path: string){
-    window.showInformationMessage('The following files were skipped due to no comments: ' + filesSkipped.join(' '));
+///<summary>
+/// Prints log to the screen to inform user if they have any incomplete comments.
+///</summary>
+export function LogUncompleted(){
+    if (filesSkipped.length > 0) {
+        window.showInformationMessage('The following files were skipped due to no comments: ' + filesSkipped.join(' '));
+    } 
 }
 
-// export function checkExists(path: string){
-//     var _fse = require('fs');
-//     _fse.open(path, 'r', function(err, fd) {
-
-//         if (err) {
-//             if(err.code === 'ENOENT') {
-//                 Core.fileExists = false;
-//             } 
-//         }
-
-//         if(Core.fileExists){
-//             _fse.readFile(fd, function(err, data) {
-//                 readConfig(data.toString());
-//             });
-
-
-
-//             // readConfig();
-//         } else {
-//             window.showInformationMessage("Your output file location has been set to: " + Core.outputDefault);
-//             Core.filePath = Core.outputDefault;
-//         }
-//     });
-// }
-
+///<summary>
+/// Generates markdown file.
+///</summary>
 export function createFile(){
     var _fse = require('fs');    
     var tempFile = Core.context.globalState.get('filePath') + '_' + Core.fileName + Core.fileType;
@@ -86,58 +70,10 @@ export function createFile(){
     Core.fileInfo = [];
 }
 
-<<<<<<< HEAD
-export function createConfig(){
-    var _fse = require('fs');
-    _fse.writeFile(Core.configFile, Core.filePath, function(err) {
-        if (err) {
-            return console.error(err);
-        }
-        // console.log(Core.filePath);
-        // console.log("Config file created!");
-    });
-}
-
-export function readConfig(path: string){
-    Core.filePath = path;
-    window.showInformationMessage("Your output file location has been set to: " + Core.filePath);
-    console.log(Core.filePath);
-    // var _fse = require('fs');
-    // _fse.readFile(path, function (err, data) {
-    //     var x = data.toString();
-    //     Core.configContent = x;
-    //     Core.filePath = x;
-    // });
-}
-
-export function setConfig(userpath :Uri[]){
-=======
-// export function createConfig(){
-//     var _fse = require('fs');
-//     _fse.writeFile(Core.configFile, Core.filePath, function(err) {
-//         if (err) {
-//             return console.error(err);
-//         }
-//         console.log(Core.filePath);
-//         console.log("Config file created!");
-//     });
-// }
-
-// export function readConfig(path: string){
-//     Core.filePath = path;
-//     window.showInformationMessage("Your output file location has been set to: " + Core.filePath);
-//     console.log(Core.filePath);
-//     // var _fse = require('fs');
-//     // _fse.readFile(path, function (err, data) {
-//     //     var x = data.toString();
-//     //     Core.configContent = x;
-//     //     Core.filePath = x;
-//     // });
-// }
-
-export function setPath(userpath :Uri[]){
->>>>>>> PathTest
-    //check if undefined.
+///<summary>
+/// Set the base path 
+///</summary>
+export function setPath(userpath: Uri[]){
     var temp = userpath[0].fsPath;
 
     if(!temp.endsWith('\\')) {
@@ -145,6 +81,5 @@ export function setPath(userpath :Uri[]){
     }
 
     Core.context.globalState.update('filePath', temp)
-    Core.filePath = temp;
     window.showInformationMessage('Current output file path is: ' + temp)
 }

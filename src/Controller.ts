@@ -29,9 +29,6 @@ export class ReadWrite {
 
                 if (hldr.includes('param') && !hldr.includes('/')) {
                     this.parameters(array.indexOf(element), array);
-
-
-
                 } else {
                     switch (hldr) {
                         case "summary":
@@ -40,7 +37,8 @@ export class ReadWrite {
                         case "example":
                             this.codeBraces(array.indexOf(element), '>', array);
                             break;
-    
+                        //TODO: Add additional xml comments
+                        //      permissions, etc...
                     }
                 }
             }
@@ -97,8 +95,6 @@ export class ReadWrite {
 
             string += temp.substr(j + 1);
         }
-
-
 
         while(flag) {
             i++;

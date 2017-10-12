@@ -1,5 +1,5 @@
 import { Uri, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
-import { readFile, createFile, projectFile, createProjFile, LogFile } from './Utilities'
+import { readFile, createFile, projectFile, createProjFile } from './Utilities'
 import { Core } from './global';
 import { FilePath, GetCurrFile } from './FilePath'
 import { ReadWrite, CleanSlateController } from './Controller';
