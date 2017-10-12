@@ -19,7 +19,6 @@ export function activate(context: ExtensionContext) {
         createFile();
     });
 
-<<<<<<< HEAD
     commands.registerCommand('extension.cleanSlate-ProjGen', () => {
         // TODO:    open prompt for Assembly-CSHarp
         //          if actual Assembly-CSharp   -> parse
@@ -39,7 +38,6 @@ export function activate(context: ExtensionContext) {
     console.log(context.globalState);
     console.log(context.globalState.get('test'));
 
-=======
     commands.registerCommand('extension.cleanSlate-markdown', () => {
         rw.Parse();
         createFile();
@@ -52,7 +50,6 @@ export function activate(context: ExtensionContext) {
     commands.registerCommand('extension.cleanSlate-showpath', () => {
         ShowPath();
     });
->>>>>>> PathTest
 
     context.subscriptions.push(controller);
 }
