@@ -1,5 +1,5 @@
 import { languages, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
-import { createConfig, setConfig, checkExists } from './Utilities'
+import { setPath } from './Utilities'
 import { Core } from './global';
 import { ReadWrite, CleanSlateController } from './Controller';
 
@@ -9,16 +9,9 @@ import { ReadWrite, CleanSlateController } from './Controller';
 ///      If not created -> Give the user options to selection where they would like to save their markdown document
 ///                         and create a config file, if they don't select, defaults output file to root drive
 ///</summary>
-export function FilePath(context: ExtensionContext) {
-    // if(!Core.fileExists){
-        context.globalState.update('filePath', Core.filePath);
-        console.log(context.globalState.get('filePath'));
-        window.showInformationMessage('Do you want to change the default location of the output file', ...['Yes'])
-        .then(val => userSelection(val))
-    // }
-    // else{
-    //     window.showInformationMessage(x + " is the current output file path");
-    // }
+export function FilePath() {
+    window.showInformationMessage('Do you want to change the default location of the output file', ...['Yes'])
+    .then(val => userSelection(val))
 }
 
 ///<summary>
@@ -40,16 +33,15 @@ export function GetCurrFile(){
 /// or allow the extension to default it's location to the root drive
 ///</summary>
 function userSelection(val: string){
-    if(!val){
-        checkExists(Core.configFile);
+    if(val){
+        window.showOpenDialog({canSelectFolders: true, openLabel: "Select Folder"})
+        .then(path => setPath(path));
     }
     else{
-        window.showOpenDialog({canSelectFolders: true, openLabel: "Select Folder"})
-        .then(path => setConfig(path));
+        ShowPath()
     }
 }
 
 export function ShowPath(){
-    var temp = Core.filePath
-    window.showInformationMessage('Current output file path is: ' + temp)
+    window.showInformationMessage('Current output file path is: ' + Core.context.globalState.get('filePath'))
 }
