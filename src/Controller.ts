@@ -240,7 +240,7 @@ export class CleanSlateController {
         if (doc.languageId === "csharp") {
 
             this._statusBarItem.command = 'extension.cleanSlate';
-
+            this._statusBarItem.tooltip = 'Clean Slate';
             this._statusBarItem.text = `$(book)`;
             this._statusBarItem.show();
 
