@@ -1,5 +1,5 @@
 import { window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
-import { readFile, checkExists, createFile, createConfig, readConfig} from './Utilities'
+import { readFile, createFile} from './Utilities'
 import { Core } from './global';
 import { FilePath, GetCurrFile, ShowPath } from './FilePath'
 import { ReadWrite, CleanSlateController } from './Controller';
@@ -8,9 +8,12 @@ import { ParseAssembly } from './ProjectGen'
 
 export function activate(context: ExtensionContext) {
 
-    // checkExists(Core.configFile);
+    //Assign this context to Core context var
+    Core.context = context;
+
     GetCurrFile();
-    FilePath(context);
+    FilePath();
+
     let controller = new CleanSlateController();
     let rw = new ReadWrite();
 
@@ -34,17 +37,13 @@ export function activate(context: ExtensionContext) {
         //rw.Parse();
     });
 
-    context.globalState.update('test', 'test');
-    console.log(context.globalState);
-    console.log(context.globalState.get('test'));
-
     commands.registerCommand('extension.cleanSlate-markdown', () => {
         rw.Parse();
         createFile();
     });
 
     commands.registerCommand('extension.cleanSlate-changepath', () => {
-        FilePath(context);
+        FilePath();
     });
 
     commands.registerCommand('extension.cleanSlate-showpath', () => {
