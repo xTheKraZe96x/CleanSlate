@@ -6,7 +6,16 @@ import { ReadWrite, CleanSlateController } from './Controller';
 
 var assemblyPath: string;
 export var filesSkipped: string[] = [];
+export var filesCreated: string[] = [];
 export var fileLocations: string[] = [];
+
+
+export function clearVariables() {
+    filesSkipped = [];
+    filesCreated = [];
+    fileLocations = [];
+    Core.counter = 0;
+}
 
 ///<summary>
 /// Open a dialog box to save the Assembly path.
@@ -92,7 +101,7 @@ export function ParseAndGen(file: string[], i: string) {
             } else {
                 switch (hldr) {
                     case "summary":
-                        outputString.push(addITall(array.indexOf(element) , '##', array));
+                        outputString.push(summary(array.indexOf(element) , '##', array));
                         break;
                     case "example":
                         outputString.push(codeBraces(array.indexOf(element), '>', array));
@@ -104,6 +113,7 @@ export function ParseAndGen(file: string[], i: string) {
 
     if(outputString.length > 1) {
         createProjFile(outputString, i.substring(l+1, x));
+        filesCreated.push(i.substring(l+1, x));
     } else {
         filesSkipped.push(i.substring(l+1, x));
         Core.counter++;
@@ -123,7 +133,7 @@ export function ParseAndGen(file: string[], i: string) {
 ///<param name="array">
 /// The file broken into array form
 ///</param>
-function addITall(num: number, str: string, array: string[]): string {
+function summary(num: number, str: string, array: string[]): string {
     var flag: boolean = true
     var string = str;
     var i = num;
@@ -144,7 +154,7 @@ function addITall(num: number, str: string, array: string[]): string {
             flag = false;
         } else if (array[i].startsWith('///')) {
             var temp = array[i].slice(0, array[i].length - 1);
-            string += temp.substring(3);
+            string += '\n##' +temp.substring(3);
         }
     }
     

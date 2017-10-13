@@ -1,7 +1,11 @@
 import { Core } from './global';
 import { FilePath } from './FilePath'
-import { AssemblyArray, ParseAndGen, fileLocations, filesSkipped } from './ProjectGen'
+import { AssemblyArray, ParseAndGen, fileLocations, filesSkipped, filesCreated, clearVariables } from './ProjectGen'
 import { Uri, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
+
+
+var newIndex: string[] = [];
+var indexPath: string = 'D:\\GameDev\\extensions\\slate\\source\\index.html.md';
 
 ///<summary>
 /// Reads the Assembly file to start the process of 
@@ -51,7 +55,90 @@ export function LogUncompleted(){
     if (filesSkipped.length > 0) {
         window.showInformationMessage('The following files were skipped due to no comments: ' + filesSkipped.join(' '));
     } 
+
+   // D:\GameDev\extensions\slate\source
+    readIndex();
+
+
+
+
 }
+
+
+function readIndex() {
+    var _fse = require('fs');
+    _fse.readFile(indexPath, function (err, data) {
+        generateNewIndex(data.toString().split("\n"));
+    });
+}
+
+function generateNewIndex(file: string[]) {
+    var i: number = 0;
+    var _fse = require('fs');
+
+    file.forEach(element => {
+        if(element.includes('includes:')) {
+            newIndex.push(element + '\n');
+            fillIncludes(i, file);
+        } else {
+            newIndex.push(element + '\n');  
+        }
+        i++;
+    });
+
+    _fse.writeFile(indexPath, newIndex.join(''), function(err) {
+        console.log('updated index');
+        clearVariables();
+        newIndex = [];
+    });
+
+}
+
+
+function fillIncludes(num: number, file: string[]) {
+    var x: number = 0;
+    var j = num;
+    var flag: boolean = true;
+
+    console.log('hello from includes');
+
+    while(flag) {
+        var y = j + 1;
+        if(file[j].includes('search') && file[y].includes('---')) {
+            x = j;
+            flag = false;
+        }
+        j++;
+    }
+
+
+
+    // for (var index = 0; index < fileLocations.length; index++) {
+    //     filesSkipped.forEach(element => {
+    //         if(fileLocations[index].includes(element)) {
+    //             fileLocations.splice(filesSkipped.lastIndexOf(element), 1);
+    //         }
+    //     });
+    // }
+
+
+
+    for (var index = num+1; index < x; index++) {
+        filesCreated.forEach(element => {
+            if(file[index].includes(element)) {
+                filesCreated.splice(filesCreated.lastIndexOf(element), 1);
+            }
+        });
+    }
+
+    filesCreated.forEach(element => {
+        newIndex.push('\t- ' + element + '\n');
+    });
+
+
+}
+
+
 
 ///<summary>
 /// Generates markdown file.
