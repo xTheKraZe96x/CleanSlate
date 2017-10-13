@@ -21,6 +21,8 @@ var indexPath: string = 'D:\\GameDev\\extensions\\slate\\source\\index.html.md';
 ///<summary>
 /// Reads the Assembly file to start the process of 
 ///</summary>
+///<param name="path"> Read file at the path given
+///</param>
 export function readFile(path: string){
     var _fse = require('fs');
     _fse.readFile(path, function (err, data) {
@@ -31,6 +33,8 @@ export function readFile(path: string){
 ///<summary>
 /// Reads the file in to parse it
 ///</summary>
+///<param name="path"> Read file at the path given
+///</param>
 export function projectFile(path: string) {
     var _fse = require('fs');
     _fse.readFile(path, function (err, data) {
@@ -41,6 +45,10 @@ export function projectFile(path: string) {
 ///<summary>
 /// Creates the file, updates variables to check if last file updated.
 ///</summary>
+///<param name="content"> Grab content and attach it infront of fileName for displaying purposes
+///</param>
+///<param name="fileName"> Grab fileName and attach it after filePath for displaying purposes
+///</param>
 export function createProjFile(content: string[], fileName: string) {
     var _fse = require('fs');    
     var tempFile = Core.context.globalState.get('filePath') + '_' + fileName + Core.fileType;
@@ -168,6 +176,8 @@ export function createFile(){
 ///<summary>
 /// Set the base path 
 ///</summary>
+///<param name="userpath"> Gets Uri variable and sets file path to globalState
+///</param>
 export function setPath(userpath: Uri[]){
     var temp = userpath[0].fsPath;
 
