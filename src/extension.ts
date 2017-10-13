@@ -23,8 +23,11 @@ export function activate(context: ExtensionContext) {
     // Assign context to the Core variables
     Core.context = context;
 
+    if(!Core.context.globalState.get('filePath')) {
+        FilePath();
+    }
+
     GetCurrFile();
-    FilePath();
 
     let controller = new CleanSlateController();
     let rw = new ReadWrite();
@@ -49,6 +52,14 @@ export function activate(context: ExtensionContext) {
 
     commands.registerCommand('extension.cleanSlate-showpath', () => {
         ShowPath();
+    });
+
+    commands.registerCommand('extension.cleanSlate-hidecoverage', () => {
+        Core.context.globalState.update('coverage', false);
+    });
+
+    commands.registerCommand('extension.cleanSlate-showcoverage', () => {
+        Core.context.globalState.update('coverage', true);
     });
 
     // if undefined set to root

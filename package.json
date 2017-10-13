@@ -26,6 +26,12 @@
         },{
             "command": "extension.cleanSlate-showpath",
             "title": "CleanSlate ShowPath"
+        },{
+            "command": "extension.cleanSlate-hidecoverage",
+            "title": "CleanSlate Hide Comment Coverage"
+        },{
+            "command": "extension.cleanSlate-showcoverage",
+            "title": "CleanSlate Show Comment Coverage"
         }]
     },
     "activationEvents": [

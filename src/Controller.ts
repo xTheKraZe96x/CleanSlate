@@ -11,7 +11,7 @@
 
 ************************************************************ */
 
-import {window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
+import {window, Progress, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
 import { Core } from './global';
 
 //TODO: clear white space in the strings.
@@ -39,6 +39,10 @@ export class ReadWrite {
                 var j = element.indexOf(">");
 
                 var hldr = element.substring(i+1, j);
+
+                //TODO: Fix param not including /
+                //          ======== OR ========
+                //      Update Documentation to show how to write.
 
                 if (hldr.includes('param') && !hldr.includes('/')) {
                     this.parameters(array.indexOf(element), array);
@@ -235,13 +239,13 @@ export class ReadWrite {
         var x = array[i].indexOf('=');
         var y = array[i].indexOf('>');
 
-        retVal += array[i].substring(x+1, y) + '|';
+        retVal += array[i].substring(x+2, y-1) + ' | ';
 
         var j = array[i].lastIndexOf('>');
         
         if (j !== array[i].length) {
             var temp = array[i].slice(0, array[i].length - 1);
-            console.log(temp);
+            console.log(temp.substr(j + 1));
 
             retVal += temp.substr(j + 1);
         }
@@ -275,12 +279,12 @@ export class CleanSlateController {
             this.commentCoverage = window.createStatusBarItem(StatusBarAlignment.Left);
         }
     
-        if(!editor) {
+        if(!editor || !Core.context.globalState.get('coverage')) {
             this.commentCoverage.hide();
             return;
         }
-    
-        this.commentCoverage.tooltip = 'Clean Slate';
+
+        this.commentCoverage.tooltip = 'Function Coverage';
         var coverage = this.getCoverage();
 
         this.commentCoverage.text = coverage;
