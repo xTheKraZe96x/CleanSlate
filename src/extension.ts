@@ -1,3 +1,16 @@
+/* ************************************************************
+ Extension - CleanSlate
+ Default entry point for the extension.
+   
+ Copyright 2017 Liftlock Studios Inc. - All Rights Reserved
+ Version: 0.0.1
+ Coded By: Stephen Roebuck
+ Modified By: Vraj Patel
+ Last Update: 10-12-2017
+
+************************************************************ */
+
+
 import { window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
 import { createFile } from './Utilities'
 import { Core } from './global';

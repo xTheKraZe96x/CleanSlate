@@ -1,3 +1,18 @@
+/* ************************************************************
+ ProjectGen - CleanSlate
+ Parses an entire Project using the Assembly-CSharp file,
+ creates files for all files that include proper commenting
+   
+ Copyright 2017 Liftlock Studios Inc. - All Rights Reserved
+ Version: 0.0.1
+ Coded By: Stephen Roebuck
+ Modified By: Stephen Roebuck
+ Last Update: 10-13-2017
+
+************************************************************ */
+
+
+
 import { Uri, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
 import { readFile, createFile, projectFile, createProjFile } from './Utilities'
 import { Core } from './global';

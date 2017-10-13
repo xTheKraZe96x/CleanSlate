@@ -1,4 +1,17 @@
-import { languages, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
+/* ************************************************************
+ FilePath - CleanSlate
+ Used to read the filePath in from the user and save to 
+ globalSettings
+   
+ Copyright 2017 Liftlock Studios Inc. - All Rights Reserved
+ Version: 0.0.1
+ Coded By: Vraj Patel
+ Modified By: Vraj Patel
+ Last Update: 10-12-2017
+
+************************************************************ */
+
+import { window } from 'vscode';
 import { setPath } from './Utilities'
 import { Core } from './global';
 import { ReadWrite, CleanSlateController } from './Controller';

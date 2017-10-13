@@ -1,8 +1,19 @@
+/* ************************************************************
+ Utilities - CleanSlate
+ Used for all of the reading and writing to files.
+   
+ Copyright 2017 Liftlock Studios Inc. - All Rights Reserved
+ Version: 0.0.1
+ Coded By: Stephen Roebuck
+ Modified By: Stephen Roebuck
+ Last Update: 10-12-2017
+
+************************************************************ */
+
 import { Core } from './global';
 import { FilePath } from './FilePath'
 import { AssemblyArray, ParseAndGen, fileLocations, filesSkipped, filesCreated, clearVariables } from './ProjectGen'
-import { Uri, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
-
+import { Uri, window } from 'vscode';
 
 var newIndex: string[] = [];
 var indexPath: string = 'D:\\GameDev\\extensions\\slate\\source\\index.html.md';
@@ -56,15 +67,12 @@ export function LogUncompleted(){
         window.showInformationMessage('The following files were skipped due to no comments: ' + filesSkipped.join(' '));
     } 
 
-   // D:\GameDev\extensions\slate\source
-    readIndex();
-
-
-
-
+    //readIndex();
 }
 
-
+///<summary>
+/// Suggested addition. Of reading and writing a new index for users.
+///</summary>
 function readIndex() {
     var _fse = require('fs');
     _fse.readFile(indexPath, function (err, data) {
