@@ -20,6 +20,7 @@ import { FilePath, GetCurrFile } from './FilePath'
 import { ReadWrite, CleanSlateController } from './Controller';
 
 var assemblyPath: string;
+var xmlTagCount: number = 0;
 export var filesSkipped: string[] = [];
 export var filesCreated: string[] = [];
 export var fileLocations: string[] = [];
@@ -99,38 +100,61 @@ export function ParseAndGen(file: string[], i: string) {
     var array: string[];
 
     array = file;
-    var x = i.indexOf('.cs');
-    var l = i.lastIndexOf('\\');
+    var eofName = i.lastIndexOf('.cs');
+    var bofName = i.lastIndexOf('\\');
 
-    outputString.push('# ' + i.substring(l+1, x) + '\r\n');
+    outputString.push('# ' + i.substring(bofName+1, eofName) + '\r\n');
     
-    array.forEach(element => {
-        if (element.startsWith('///') && element.includes('<')) {
-            var i = element.indexOf("<");
-            var j = element.indexOf(">");
+    for (var x = 0; x < array.length; x++) {
+        array[x] = array[x].replace(/^\s*/g, '');;
+    }
 
-            var hldr = element.substring(i+1, j);
+    for (var x = 0; x < array.length; x++) {
+        var element = array[x];
+        
+        if (element.startsWith('///') && element.includes('<')) {
+            var k = element.indexOf("<");
+            var j = element.indexOf(">");
+            
+            var hldr = element.substring(k+1, j);
+
+            //TODO: Fix param not including /
+            //          ======== OR ========
+            //      Update Documentation to show how to write.
 
             if (hldr.includes('param') && !hldr.includes('/')) {
-                outputString.push(parameters(array.indexOf(element), array));
+                parameters(x, array);
+            } else if (hldr.includes('/')) {
+                if(!array[x+1].includes('///')) {
+                    
+                    outputString[outputString.length - xmlTagCount] = outputString[outputString.length - xmlTagCount].replace(/^#*/g, '\n\r### ' + array[x+1].substring(0, array[x+1].length - 2));
+
+                    xmlTagCount = 0;
+
+                }
             } else {
                 switch (hldr) {
                     case "summary":
-                        outputString.push(summary(array.indexOf(element) , '###', array));
+                    outputString.push(summary(x, '###', array));
+                        xmlTagCount++;
                         break;
                     case "example":
-                        outputString.push(codeBraces(array.indexOf(element), '>', array));
+                    outputString.push(codeBraces(x, '>', array));
+                        xmlTagCount;
                         break;
+                    //TODO: Add additional xml comments
+                    //      permissions, etc...
                 }
             }
         }
-    });
+
+    }
 
     if(outputString.length > 1) {
-        createProjFile(outputString, i.substring(l+1, x));
-        filesCreated.push(i.substring(l+1, x));
+        createProjFile(outputString, i.substring(bofName+1, eofName));
+        filesCreated.push(i.substring(bofName+1, eofName));
     } else {
-        filesSkipped.push(i.substring(l+1, x));
+        filesSkipped.push(i.substring(bofName+1, eofName));
         Core.counter++;
     } 
 
@@ -169,7 +193,7 @@ function summary(num: number, str: string, array: string[]): string {
             flag = false;
         } else if (array[i].startsWith('///')) {
             var temp = array[i].slice(0, array[i].length - 1);
-            string += '\n### ' +temp.substring(3);
+            string += '\n ' +temp.substring(3);
         }
     }
     
@@ -248,8 +272,8 @@ function parameters(num: number, array: string[]): string {
     var x = array[i].indexOf('=');
     var y = array[i].indexOf('>');
 
-    if(!this.checkParamExists(array[i].substring(x+1,y))) {
-
+    if(xmlTagCount < 2) {
+        xmlTagCount++;
         var flag: boolean = true;
         var extraParams: boolean = true;
 
@@ -265,7 +289,7 @@ function parameters(num: number, array: string[]): string {
                 }
             }
 
-            if (array[i+1].includes('param')) {
+            if (array[i+1].startsWith('///') && array[i+1].includes('param')) {
                 i++;
                 flag = true;
                 string += '\r\n'

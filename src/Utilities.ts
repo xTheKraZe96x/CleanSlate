@@ -73,6 +73,7 @@ export function createProjFile(content: string[], fileName: string) {
 export function LogUncompleted(){
     if (filesSkipped.length > 0) {
         window.showInformationMessage('The following files were skipped due to no comments: ' + filesSkipped.join(' '));
+        clearVariables();
     } 
 
     //readIndex();
@@ -104,7 +105,7 @@ function generateNewIndex(file: string[]) {
 
     _fse.writeFile(indexPath, newIndex.join(''), function(err) {
         console.log('updated index');
-        clearVariables();
+        //clearVariables();
         newIndex = [];
     });
 

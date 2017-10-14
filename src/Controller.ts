@@ -110,7 +110,6 @@ export class ReadWrite {
             var temp = array[i].slice(0, array[i].length - 1);
 
             string += temp.substr(j + 1);
-            console.log(string);
         }
 
         while(flag) {
