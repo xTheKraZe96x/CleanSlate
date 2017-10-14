@@ -116,7 +116,7 @@ export function ParseAndGen(file: string[], i: string) {
             } else {
                 switch (hldr) {
                     case "summary":
-                        outputString.push(summary(array.indexOf(element) , '##', array));
+                        outputString.push(summary(array.indexOf(element) , '###', array));
                         break;
                     case "example":
                         outputString.push(codeBraces(array.indexOf(element), '>', array));
@@ -169,7 +169,7 @@ function summary(num: number, str: string, array: string[]): string {
             flag = false;
         } else if (array[i].startsWith('///')) {
             var temp = array[i].slice(0, array[i].length - 1);
-            string += '\n##' +temp.substring(3);
+            string += '\n### ' +temp.substring(3);
         }
     }
     

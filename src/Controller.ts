@@ -17,49 +17,74 @@ import { Core } from './global';
 //TODO: clear white space in the strings.
 
 export class ReadWrite {
+
+    private xmlTagCount: number = 0;
     ///<summary>
     /// Parses the current document and outputs a markdown file.
     ///</summary>
     public Parse() {
 
         var outputString: string[];
-
+        var fcounter: number = 0; // used for counting number of functions
+        //var xmlTagCount: number = 0;
         let editor = window.activeTextEditor;
         let doc = editor.document;
         let docContent = doc.getText();
         var array: string[];
 
         array = docContent.split('\n');
-        
-        Core.fileInfo.push('# ' + Core.fileName + '\r\n');
-        
-        array.forEach(element => {
-            if (element.startsWith('///') && element.includes('<')) {
-                var i = element.indexOf("<");
-                var j = element.indexOf(">");
+        for (var i = 0; i < array.length; i++) {
+            array[i] = array[i].replace(/^\s*/g, '');;
+            
+        }
+        // array.forEach(element => {
+        //     element.replace(/^\s*/g, '');
+        // });
 
-                var hldr = element.substring(i+1, j);
+        Core.fileInfo.push('# ' + Core.fileName + '\r\n');
+
+
+        for (var i = 0; i < array.length; i++) {
+            var element = array[i];
+            
+            if (element.startsWith('///') && element.includes('<')) {
+                var k = element.indexOf("<");
+                var j = element.indexOf(">");
+                
+                var hldr = element.substring(k+1, j);
 
                 //TODO: Fix param not including /
                 //          ======== OR ========
                 //      Update Documentation to show how to write.
 
                 if (hldr.includes('param') && !hldr.includes('/')) {
-                    this.parameters(array.indexOf(element), array);
+                    this.parameters(i, array);
+                } else if (hldr.includes('/')) {
+                    if(!array[i+1].includes('///')) {
+                        
+                        Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '\n\r### ' + array[i+1].substring(0, array[i+1].length - 2));
+                        fcounter++;
+                        this.xmlTagCount = 0;
+
+                    }
                 } else {
                     switch (hldr) {
                         case "summary":
-                            this.addITall(array.indexOf(element) , '##', array);
+                            this.addITall(i, '###', array);
+                            this.xmlTagCount++;
                             break;
                         case "example":
-                            this.codeBraces(array.indexOf(element), '>', array);
+                            this.codeBraces(i, '>', array);
+                            this.xmlTagCount;
                             break;
                         //TODO: Add additional xml comments
                         //      permissions, etc...
                     }
                 }
             }
-        });
+
+        }
+
     }
     
     ///<summary>
@@ -95,8 +120,8 @@ export class ReadWrite {
                 string += '\n';
                 flag = false;
             } else if (array[i].startsWith('///')) {
-                                var temp = array[i].slice(0, array[i].length - 1);
-                string += temp.substring(3);
+                var temp = array[i].slice(0, array[i].length - 1);
+                string += '\n ' + temp.substring(3);
             }
         }
         
@@ -115,7 +140,7 @@ export class ReadWrite {
     ///<param name="array">
     /// The file broken into array form
     ///</param>
-    public codeBraces(num: number, str: string, array: string[]) {
+    private codeBraces(num: number, str: string, array: string[]) {
         var flag: boolean = true
         var codeBlock: boolean = false;
         var string = str;
@@ -169,15 +194,15 @@ export class ReadWrite {
     ///<param name="array">
     /// The file broken into array form
     ///</param>
-    parameters(num: number, array: string[]) {
+    private parameters(num: number, array: string[]) {
         var i = num;
         var string = 'Parameter | Description \n --------|--------\n';
 
         var x = array[i].indexOf('=');
         var y = array[i].indexOf('>');
 
-        if(!this.checkParamExists(array[i].substring(x+1,y))) {
-
+        if(this.xmlTagCount < 2) {
+            this.xmlTagCount++;
             var flag: boolean = true;
             var extraParams: boolean = true;
 
@@ -193,7 +218,7 @@ export class ReadWrite {
                     }
                 }
 
-                if (array[i+1].includes('param')) {
+                if (array[i+1].startsWith('///') && array[i+1].includes('param')) {
                     i++;
                     flag = true;
                     string += '\r\n'
@@ -212,7 +237,7 @@ export class ReadWrite {
     ///<param name="checkVal">
     /// Value to check for within the current file.
     ///</param>
-    checkParamExists(checkVal: string): boolean {
+    private checkParamExists(checkVal: string): boolean {
         var retVal: boolean = false;
 
         Core.fileInfo.forEach(element => {
@@ -233,7 +258,7 @@ export class ReadWrite {
     ///<param name="array">
     /// The file broken into array form
     ///</param>
-    paramTitle(array: string[], i: number): string {
+    private paramTitle(array: string[], i: number): string {
         var retVal = '';
 
         var x = array[i].indexOf('=');
@@ -272,7 +297,7 @@ export class CleanSlateController {
     }
 
 
-    showCoverage() {
+    private showCoverage() {
         let editor = window.activeTextEditor;
     
         if (!this.commentCoverage) {
@@ -303,18 +328,23 @@ export class CleanSlateController {
         var activeFile: string[];
     
         activeFile = docContent.split('\n');
+
+        for (var i = 0; i < activeFile.length; i++) {
+            activeFile[i] = activeFile[i].replace(/^\s*/g, ''); 
+        }
+
     
         var functions: number = 0;
         var commentedFunc: number = 0;
 
 
         for (var i = 0; i < activeFile.length; i++) {
-            if((activeFile[i].includes('private') && activeFile[i].includes(')') && activeFile[i].includes('{') )
-            || (activeFile[i].includes('public') && activeFile[i].includes(')') && activeFile[i].includes('{'))
-            || (activeFile[i].includes('static') && activeFile[i].includes(')') && activeFile[i].includes('{'))) {
+            if((activeFile[i].startsWith('private') && activeFile[i].includes(')') && activeFile[i].includes('{') )
+            || (activeFile[i].startsWith('public') && activeFile[i].includes(')') && activeFile[i].includes('{'))
+            || (activeFile[i].startsWith('static') && activeFile[i].includes(')') && activeFile[i].includes('{'))) {
                 functions++;
                 
-                if(activeFile[i-1].includes('///')) {
+                if(activeFile[i-1].startsWith('///')) {
                     commentedFunc++;
                 }
             }
@@ -330,7 +360,7 @@ export class CleanSlateController {
     /// Creates the status bar icon
     /// Sets it up to react to a command.
     ///</summary>
-    showButton() {
+    private showButton() {
         if (!this._statusBarItem) {
             this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
         }
