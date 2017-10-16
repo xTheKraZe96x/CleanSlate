@@ -7,11 +7,9 @@
  Version: 0.0.1
  Coded By: Stephen Roebuck
  Modified By: Stephen Roebuck
- Last Update: 10-13-2017
+ Last Update: 10-16-2017
 
 ************************************************************ */
-
-
 
 import { Uri, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
 import { readFile, createFile, projectFile, createProjFile } from './Utilities'
@@ -123,7 +121,12 @@ export function ParseAndGen(file: string[], i: string) {
             //      Update Documentation to show how to write.
 
             if (hldr.includes('param') && !hldr.includes('/')) {
-                parameters(x, array);
+                outputString.push(parameters(x, array));
+                if(outputString[outputString.length - 1] === undefined) {
+                    outputString.pop();
+                }
+
+
             } else if (hldr.includes('/')) {
                 if(!array[x+1].includes('///')) {
                     
@@ -135,11 +138,11 @@ export function ParseAndGen(file: string[], i: string) {
             } else {
                 switch (hldr) {
                     case "summary":
-                    outputString.push(summary(x, '###', array));
+                        outputString.push(summary(x, '###', array));
                         xmlTagCount++;
                         break;
                     case "example":
-                    outputString.push(codeBraces(x, '>', array));
+                        outputString.push(codeBraces(x, '>', array));
                         xmlTagCount;
                         break;
                     //TODO: Add additional xml comments
@@ -278,7 +281,7 @@ function parameters(num: number, array: string[]): string {
         var extraParams: boolean = true;
 
         while(extraParams) {
-            string += this.paramTitle(array, i);
+            string += paramTitle(array, i);
             while(flag) {
                 i++;
                 if( array[i].startsWith('///') && array[i].includes('</')) {

@@ -33,8 +33,7 @@ export function readFile(path: string){
 ///<summary>
 /// Reads the file in to parse it
 ///</summary>
-///<param name="path"> Read file at the path given
-///</param>
+///<param name="path"> Read file at the path given </param>
 export function projectFile(path: string) {
     var _fse = require('fs');
     _fse.readFile(path, function (err, data) {

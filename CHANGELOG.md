@@ -1,7 +1,6 @@
 # Change Log
-All notable changes to the "wordcount" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-- Initial release
+## [Version 1.0.0]
+- Additions of commands: GenerateProj, Generate, Show/Hide Comment Coverage, ChangePath, ShowPath
+- Added Status bar icon for Generating the current window
+- Added Status bar text for comment coverage.

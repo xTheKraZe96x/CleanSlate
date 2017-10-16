@@ -13,6 +13,7 @@
 
 import {window, Progress, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
 import { Core } from './global';
+import { GetCurrFile } from './FilePath';
 
 //TODO: clear white space in the strings.
 
@@ -313,8 +314,6 @@ export class CleanSlateController {
 
         this.commentCoverage.text = coverage;
         this.commentCoverage.show();
-
-
     }
 
 
@@ -340,7 +339,8 @@ export class CleanSlateController {
         for (var i = 0; i < activeFile.length; i++) {
             if((activeFile[i].startsWith('private') && activeFile[i].includes(')') && activeFile[i].includes('{') )
             || (activeFile[i].startsWith('public') && activeFile[i].includes(')') && activeFile[i].includes('{'))
-            || (activeFile[i].startsWith('static') && activeFile[i].includes(')') && activeFile[i].includes('{'))) {
+            || (activeFile[i].startsWith('static') && activeFile[i].includes(')') && activeFile[i].includes('{')) ||
+            (activeFile[i].startsWith('export') && activeFile[i].includes(')') && activeFile[i].includes('{'))) {
                 functions++;
                 
                 if(activeFile[i-1].startsWith('///')) {
@@ -400,5 +400,6 @@ export class CleanSlateController {
     private _onEvent() {
         this.showButton();
         this.showCoverage();
+        GetCurrFile();
     }
 }

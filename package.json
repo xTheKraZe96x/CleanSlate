@@ -11,6 +11,12 @@
     "categories": [
         "Other"
     ],
+	"keywords": [
+		"slate",
+		"LiftLock",
+		"xml",
+		"comment-parsing"
+	],
     "contributes": {
         "commands": [{
             "command": "extension.cleanSlate",
@@ -37,7 +43,10 @@
     },
     "activationEvents": [
         "onLanguage:csharp"
-    ],
+    ],"repository": {
+		"type": "git",
+		"url": "https://github.com/Liftlock/CleanSlate"
+	},
     "main": "./out/extension",
     "scripts": {
         "vscode:prepublish": "npm run compile",
