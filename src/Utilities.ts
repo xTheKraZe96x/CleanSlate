@@ -58,7 +58,7 @@ export function createProjFile(content: string[], fileName: string) {
         }
         Core.counter++;
 
-        console.log('fLoc length' + fileLocations.length + ' | ' + Core.counter);
+        // console.log('fLoc length' + fileLocations.length + ' | ' + Core.counter);
         
          if(Core.counter === fileLocations.length) {
             LogUncompleted();
@@ -103,7 +103,7 @@ function generateNewIndex(file: string[]) {
     });
 
     _fse.writeFile(indexPath, newIndex.join(''), function(err) {
-        console.log('updated index');
+        //console.log('updated index');
         //clearVariables();
         newIndex = [];
     });
@@ -116,7 +116,7 @@ function fillIncludes(num: number, file: string[]) {
     var j = num;
     var flag: boolean = true;
 
-    console.log('hello from includes');
+    //console.log('hello from includes');
 
     while(flag) {
         var y = j + 1;
@@ -162,12 +162,12 @@ function fillIncludes(num: number, file: string[]) {
 export function createFile(){
     var _fse = require('fs');    
     var tempFile = Core.context.globalState.get('filePath') + '_' + Core.fileName + Core.fileType;
-    console.log(tempFile);
+    //console.log(tempFile);
     _fse.writeFile(tempFile, Core.fileInfo.join('\n'), function(err) {
         if (err) {
             return console.error(err);
         }
-        console.log("File created!");
+        //console.log("File created!");
     });
 
     Core.fileInfo = [];

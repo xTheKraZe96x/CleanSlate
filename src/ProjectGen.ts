@@ -125,8 +125,6 @@ export function ParseAndGen(file: string[], i: string) {
                 if(outputString[outputString.length - 1] === undefined) {
                     outputString.pop();
                 }
-
-
             } else if (hldr.includes('/')) {
                 if(!array[x+1].includes('///')) {
                     
@@ -143,7 +141,11 @@ export function ParseAndGen(file: string[], i: string) {
                         break;
                     case "example":
                         outputString.push(codeBraces(x, '>', array));
-                        xmlTagCount;
+                        xmlTagCount++;
+                        break;
+                    case "returns": 
+
+                        xmlTagCount++;
                         break;
                     //TODO: Add additional xml comments
                     //      permissions, etc...
@@ -226,7 +228,7 @@ function codeBraces(num: number, str: string, array: string[]): string {
 
     if (j !== array[i].length) {
         var temp = array[i].slice(0, array[i].length - 1);
-        console.log(temp);
+        // console.log(temp);
 
         string += temp.substr(j + 1);
     }
@@ -344,7 +346,7 @@ function paramTitle(array: string[], i: number): string {
     
     if (j !== array[i].length) {
         var temp = array[i].slice(0, array[i].length - 1);
-        console.log(temp);
+        // console.log(temp);
 
         retVal += temp.substr(j + 1);
     }

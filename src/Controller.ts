@@ -62,8 +62,7 @@ export class ReadWrite {
                     this.parameters(i, array);
                 } else if (hldr.includes('/')) {
                     if(!array[i+1].includes('///')) {
-                        
-                        Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '\n\r### ' + array[i+1].substring(0, array[i+1].length - 2));
+                        Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '\n\r## ' + array[i+1].substring(0, array[i+1].length - 2));
                         fcounter++;
                         this.xmlTagCount = 0;
 
@@ -71,12 +70,16 @@ export class ReadWrite {
                 } else {
                     switch (hldr) {
                         case "summary":
-                            this.addITall(i, '###', array);
+                            this.summary(i, '###', array);
                             this.xmlTagCount++;
                             break;
                         case "example":
                             this.codeBraces(i, '>', array);
-                            this.xmlTagCount;
+                            // this.xmlTagCount++;
+                            break;
+                        case "returns": 
+                            //this.returns(i, array);
+                            this.xmlTagCount++;
                             break;
                         //TODO: Add additional xml comments
                         //      permissions, etc...
@@ -100,9 +103,12 @@ export class ReadWrite {
     ///<param name="array">
     /// The file broken into array form
     ///</param>
-    public addITall(num: number, str: string, array: string[]) {
+    public summary(num: number, str: string, array: string[]) {
         var flag: boolean = true
         var string = str;
+
+
+        
         var i = num;
 
         var j = array[i].lastIndexOf('>');
@@ -151,7 +157,7 @@ export class ReadWrite {
 
         if (j !== array[i].length) {
             var temp = array[i].slice(0, array[i].length - 1);
-            console.log(temp);
+            //console.log(temp);
 
             string += temp.substr(j + 1);
         }
@@ -181,7 +187,10 @@ export class ReadWrite {
             }
         }
         
-        Core.fileInfo.push(string);
+        // TODO:    bug test this
+        //          see if any edge cases.
+
+        Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '### \n\r ' + string);
     }
 
 
@@ -231,6 +240,13 @@ export class ReadWrite {
 
     }
 
+    private returns() {
+
+    }
+
+
+
+
     ///<summary>
     /// Checks if the string exists in the fileInfo, returns boolean.
     ///</summary>
@@ -270,7 +286,7 @@ export class ReadWrite {
         
         if (j !== array[i].length) {
             var temp = array[i].slice(0, array[i].length - 1);
-            console.log(temp.substr(j + 1));
+            //console.log(temp.substr(j + 1));
 
             retVal += temp.substr(j + 1);
         }
