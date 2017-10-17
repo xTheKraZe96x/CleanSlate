@@ -12,7 +12,7 @@ Clean Slate grabs XML style commenting tags from 'CSharp' files and exports a ma
 - **CleanSlate Generate** -> Generates the markdown document of  the current file you have open in text editor.
 - **CleanSlate GenerateProj** -> Generates markdown documents for all files in a project.
 - **CleanSlate ChangePath** -> Change path to where you would like to produce markdown document.
-- ** CleanSlate ShowPath ** -> Shows the path that is currently set as default output path.
+- **CleanSlate ShowPath** -> Shows the path that is currently set as default output path.
 - **CleanSlate Hide Comment Coverage** -> Hides the status bar comment coverage information.
 - **CleanSlate Show Comment Coverage** -> Shows the status bar comment coverage information.
 
