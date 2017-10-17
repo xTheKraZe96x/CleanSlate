@@ -71,12 +71,21 @@ export function createProjFile(content: string[], fileName: string) {
 ///</summary>
 export function LogUncompleted(){
     if (filesSkipped.length > 0) {
-        window.showInformationMessage('The following files were skipped due to no comments: ' + filesSkipped.join(' '));
+        window.showInformationMessage('The following files were skipped due to incorrect or no comments: ' + filesSkipped.join(' '));
         clearVariables();
     } 
-
     //readIndex();
 }
+
+///<summary>
+/// Prints log to the screen to inform user if they have any incomplete comments.
+///</summary>
+export function commentError(fileName: string){
+     window.showInformationMessage('The following file has incorrect comments: ' + fileName);
+}
+
+
+
 
 ///<summary>
 /// Suggested addition. Of reading and writing a new index for users.

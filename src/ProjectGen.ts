@@ -12,13 +12,15 @@
 ************************************************************ */
 
 import { Uri, window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument } from 'vscode';
-import { readFile, createFile, projectFile, createProjFile } from './Utilities'
+import { readFile, createFile, projectFile, createProjFile, commentError } from './Utilities'
 import { Core } from './global';
 import { FilePath, GetCurrFile } from './FilePath'
 import { ReadWrite, CleanSlateController } from './Controller';
 
 var assemblyPath: string;
 var xmlTagCount: number = 0;
+var oob: boolean = false;
+
 export var filesSkipped: string[] = [];
 export var filesCreated: string[] = [];
 export var fileLocations: string[] = [];
@@ -94,15 +96,13 @@ function checkFile(path: Uri[]) {
 ///</param>
 export function ParseAndGen(file: string[], i: string) {
     var outputString: string[] = [];
-
     var array: string[];
-
     array = file;
     var eofName = i.lastIndexOf('.cs');
     var bofName = i.lastIndexOf('\\');
-
     outputString.push('# ' + i.substring(bofName+1, eofName) + '\r\n');
-    
+    oob = false;
+
     for (var x = 0; x < array.length; x++) {
         array[x] = array[x].replace(/^\s*/g, '');;
     }
@@ -127,11 +127,8 @@ export function ParseAndGen(file: string[], i: string) {
                 }
             } else if (hldr.includes('/')) {
                 if(!array[x+1].includes('///')) {
-                    
                     outputString[outputString.length - xmlTagCount] = outputString[outputString.length - xmlTagCount].replace(/^#*/g, '\n\r### ' + array[x+1].substring(0, array[x+1].length - 2));
-
                     xmlTagCount = 0;
-
                 }
             } else {
                 switch (hldr) {
@@ -140,8 +137,9 @@ export function ParseAndGen(file: string[], i: string) {
                         xmlTagCount++;
                         break;
                     case "example":
-                        outputString.push(codeBraces(x, '>', array));
-                        xmlTagCount++;
+                        outputString[outputString.length - xmlTagCount] = outputString[outputString.length - xmlTagCount].replace(/^#*/g, '### \n\r ' + codeBraces(x, '>', array));
+                        //outputString.push(codeBraces(x, '>', array));
+                       // xmlTagCount++;
                         break;
                     case "returns": 
 
@@ -155,13 +153,21 @@ export function ParseAndGen(file: string[], i: string) {
 
     }
 
-    if(outputString.length > 1) {
-        createProjFile(outputString, i.substring(bofName+1, eofName));
-        filesCreated.push(i.substring(bofName+1, eofName));
-    } else {
-        filesSkipped.push(i.substring(bofName+1, eofName));
+    if(oob) {
+        commentError(i.substring(bofName+1, eofName));
         Core.counter++;
-    } 
+    } else {
+        if(outputString.length > 1) {
+            createProjFile(outputString, i.substring(bofName+1, eofName));
+            filesCreated.push(i.substring(bofName+1, eofName));
+        } else {
+            filesSkipped.push(i.substring(bofName+1, eofName));
+            Core.counter++;
+        } 
+    }
+
+
+
 
 }
 
@@ -181,18 +187,19 @@ function summary(num: number, str: string, array: string[]): string {
     var flag: boolean = true
     var string = str;
     var i = num;
-
     var j = array[i].lastIndexOf('>');
 
     if (j !== array[i].length) {
         var temp = array[i].slice(0, array[i].length - 1);
-
         string += temp.substr(j + 1);
     }
 
     while(flag) {
         i++;
-
+        if( i >= array.length) {
+            oob = true;
+            return '';
+        }
         if( array[i].startsWith('///') && array[i].includes('</')) {
             string += '\n';
             flag = false;
@@ -222,21 +229,23 @@ function codeBraces(num: number, str: string, array: string[]): string {
     var codeBlock: boolean = false;
     var string = str;
     var i = num;
-
     // Checks to see if there is more to the inital string
     var j = array[i].lastIndexOf('>');
 
     if (j !== array[i].length) {
         var temp = array[i].slice(0, array[i].length - 1);
-        // console.log(temp);
-
         string += temp.substr(j + 1);
     }
 
     while(flag) {
         i++;
 
-        if( array[i].startsWith('///') && array[i].includes('</example')) {
+        if( i >= array.length) {
+            oob = true;
+            return '';
+        }
+
+        if(array[i].startsWith('///') && array[i].includes('</example')) {
             string += '\n';
             flag = false;
         } else if(array[i].startsWith('///') && array[i].includes('<code>')) {
@@ -249,6 +258,10 @@ function codeBraces(num: number, str: string, array: string[]): string {
 
         while(codeBlock) {
             i++;
+            if( i >= array.length) {
+                oob = true;
+                return "";
+            }
             if( array[i].startsWith('///') && array[i].includes('</code')) {
                 string += '\n```\r\n';
                 codeBlock = false;
@@ -286,6 +299,10 @@ function parameters(num: number, array: string[]): string {
             string += paramTitle(array, i);
             while(flag) {
                 i++;
+                if( i >= array.length) {
+                    oob = true;
+                    return '';
+                }
                 if( array[i].startsWith('///') && array[i].includes('</')) {
                     flag = false;
                 } else {
@@ -308,24 +325,6 @@ function parameters(num: number, array: string[]): string {
 }
 
 ///<summary>
-/// Checks if the string exists in the fileInfo
-///</summary>
-///<param name="checkVal">
-/// Value to check for within the current file.
-///</param>
-function checkParamExists(checkVal: string): boolean {
-    var retVal: boolean = false;
-
-    Core.fileInfo.forEach(element => {
-        if(element.includes(checkVal)) {
-            retVal = true;
-        }
-    });
-
-    return retVal;
-}
-
-///<summary>
 /// Grabs the title of the parameter
 ///</summary>
 ///<param name="i">
@@ -336,18 +335,14 @@ function checkParamExists(checkVal: string): boolean {
 ///</param>
 function paramTitle(array: string[], i: number): string {
     var retVal = '';
-
     var x = array[i].indexOf('=');
     var y = array[i].indexOf('>');
 
     retVal += array[i].substring(x+1, y) + '|';
-
     var j = array[i].lastIndexOf('>');
     
     if (j !== array[i].length) {
         var temp = array[i].slice(0, array[i].length - 1);
-        // console.log(temp);
-
         retVal += temp.substr(j + 1);
     }
 
