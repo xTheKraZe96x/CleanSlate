@@ -4,3 +4,4 @@
 - Additions of commands: GenerateProj, Generate, Show/Hide Comment Coverage, ChangePath, ShowPath
 - Added Status bar icon for Generating the current window
 - Added Status bar text for comment coverage.
+- XML Tag support: { summary, param, example+code, returns }

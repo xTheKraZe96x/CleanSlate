@@ -142,7 +142,7 @@ export function ParseAndGen(file: string[], i: string) {
                        // xmlTagCount++;
                         break;
                     case "returns": 
-
+                        outputString.push(returns(x, array));
                         xmlTagCount++;
                         break;
                     //TODO: Add additional xml comments
@@ -286,7 +286,7 @@ function codeBraces(num: number, str: string, array: string[]): string {
 function parameters(num: number, array: string[]): string {
     var i = num;
     var string = 'Parameter | Description \n --------|--------\n';
-
+    var currentLine = 0;
     var x = array[i].indexOf('=');
     var y = array[i].indexOf('>');
 
@@ -298,17 +298,47 @@ function parameters(num: number, array: string[]): string {
         while(extraParams) {
             string += paramTitle(array, i);
             while(flag) {
-                i++;
-                if( i >= array.length) {
-                    oob = true;
-                    return '';
-                }
                 if( array[i].startsWith('///') && array[i].includes('</')) {
+                    // inline as well
+                    var temp = array[i].substr(0, array[i].lastIndexOf('<'));
+                    if(currentLine === 0) {
+                        string += array[i].substring(array[i].indexOf('>')+1, array[i].lastIndexOf('<'));
+                    } else {
+                        if (temp !== '</param') {
+                            string += temp.substring(3);
+                        }
+                        
+                    }
+
+                    currentLine = 0;
                     flag = false;
                 } else {
-                    var temp = array[i].slice(0, array[i].length - 1);
-                    string += temp.substring(3);
+                    if(array[i].includes('</')) {
+                        string += array[i].substring(3, array[i].lastIndexOf('<'));
+                    } else {
+                        if(array[i].includes('<param')) {
+                            string += array[i].substr(array[i].lastIndexOf('>') + 1);
+                            string = string.slice(0, string.length - 1);
+                        } else {
+                            var temp = array[i].slice(0, array[i].length - 1);
+                            string += temp.substring(3);
+                        }
+                    }
+                    i++;
+                    currentLine++;
                 }
+
+                // i++;
+                // if( i >= array.length) {
+                //     oob = true;
+                //     return '';
+                // }
+                // if( array[i].startsWith('///') && array[i].includes('</')) {
+                //     flag = false;
+                // } else {
+                //     var temp = array[i].slice(0, array[i].length - 1);
+                //     string += temp.substring(3);
+                // }
             }
 
             if (array[i+1].startsWith('///') && array[i+1].includes('param')) {
@@ -324,6 +354,44 @@ function parameters(num: number, array: string[]): string {
 
 }
 
+
+function returns(line: number, file: string[]) : string {
+    var string: string = "**Returns** ";
+
+    if (file[line].includes('</')) {
+        var x = file[line].indexOf('>');
+        var y = file[line].lastIndexOf('<');
+
+        string += file[line].substring(x+1, y);
+    } else {
+        var j = file[line].lastIndexOf('>');
+        var flag = true;
+        if (j !== file[line].length) {
+            var temp = file[line].slice(0, file[line].length - 1);
+            string += temp.substr(j + 1);
+        }
+
+
+        while(flag) {
+            line++;
+            if( file[line].startsWith('///') && file[line].includes('</')) {
+                flag = false;
+            } else {
+                var temp = file[line].slice(0, file[line].indexOf('</'));
+                string += temp.substring(3);
+            }
+        }
+    }
+
+   return string;
+}
+
+
+
+
+
+
+
 ///<summary>
 /// Grabs the title of the parameter
 ///</summary>
@@ -338,13 +406,13 @@ function paramTitle(array: string[], i: number): string {
     var x = array[i].indexOf('=');
     var y = array[i].indexOf('>');
 
-    retVal += array[i].substring(x+1, y) + '|';
+    retVal += array[i].substring(x+2, y-1) + '|';
     var j = array[i].lastIndexOf('>');
     
-    if (j !== array[i].length) {
-        var temp = array[i].slice(0, array[i].length - 1);
-        retVal += temp.substr(j + 1);
-    }
+    // if (j !== array[i].length) {
+    //     var temp = array[i].slice(0, array[i].length - 1);
+    //     retVal += temp.substr(j + 1);
+    // }
 
     return retVal;
 }
