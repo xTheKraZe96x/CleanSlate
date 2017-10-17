@@ -327,18 +327,6 @@ function parameters(num: number, array: string[]): string {
                     i++;
                     currentLine++;
                 }
-
-                // i++;
-                // if( i >= array.length) {
-                //     oob = true;
-                //     return '';
-                // }
-                // if( array[i].startsWith('///') && array[i].includes('</')) {
-                //     flag = false;
-                // } else {
-                //     var temp = array[i].slice(0, array[i].length - 1);
-                //     string += temp.substring(3);
-                // }
             }
 
             if (array[i+1].startsWith('///') && array[i+1].includes('param')) {
@@ -351,10 +339,17 @@ function parameters(num: number, array: string[]): string {
         }
         return string;
     }
-
 }
 
-
+///<summary>
+/// Cycles through parameters and fills the fileinfo
+///</summary>
+///<param name="line">
+/// The current spot at the array being used to parse the line
+///</param>
+///<param name="file">
+/// The file broken into array form
+///</param>
 function returns(line: number, file: string[]) : string {
     var string: string = "**Returns** ";
 

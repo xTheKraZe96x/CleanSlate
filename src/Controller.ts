@@ -38,9 +38,6 @@ export class ReadWrite {
             array[i] = array[i].replace(/^\s*/g, '');;
             
         }
-        // array.forEach(element => {
-        //     element.replace(/^\s*/g, '');
-        // });
 
         Core.fileInfo.push('# ' + Core.fileName + '\r\n');
 
@@ -53,10 +50,6 @@ export class ReadWrite {
                 var j = element.indexOf(">");
                 
                 var hldr = element.substring(k+1, j);
-
-                //TODO: Fix param not including /
-                //          ======== OR ========
-                //      Update Documentation to show how to write.
 
                 if (hldr.includes('param') && !hldr.includes('/')) {
                     this.parameters(i, array);
@@ -159,7 +152,6 @@ export class ReadWrite {
 
         if (j !== array[i].length) {
             var temp = array[i].slice(0, array[i].length - 1);
-            //console.log(temp);
 
             string += temp.substr(j + 1);
         }
@@ -188,9 +180,6 @@ export class ReadWrite {
                 }
             }
         }
-        
-        // TODO:    bug test this
-        //          see if any edge cases.
 
         Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '### \n\r ' + string);
     }
@@ -277,7 +266,6 @@ export class ReadWrite {
                 string += temp.substr(j + 1);
             }
 
-
             while(flag) {
                 line++;
                 if( file[line].startsWith('///') && file[line].includes('</')) {
@@ -326,15 +314,6 @@ export class ReadWrite {
         var y = array[i].indexOf('>');
 
         retVal += array[i].substring(x+2, y-1) + ' | ';
-
-        // var j = array[i].lastIndexOf('>');
-        
-        // if (j !== array[i].length) {
-        //     var temp = array[i].slice(0, array[i].length - 1);
-        //     //console.log(temp.substr(j + 1));
-
-        //     retVal += temp.substr(j + 1);
-        // }
 
         return retVal;
     }
@@ -437,7 +416,7 @@ export class CleanSlateController {
 
             this._statusBarItem.command = 'extension.cleanSlate';
             this._statusBarItem.tooltip = 'Clean Slate';
-            this._statusBarItem.text = `$(book)`;
+            this._statusBarItem.text = `$(clippy)`;
             this._statusBarItem.show();
 
 

@@ -57,8 +57,6 @@ export function createProjFile(content: string[], fileName: string) {
             return console.error(err);
         }
         Core.counter++;
-
-        // console.log('fLoc length' + fileLocations.length + ' | ' + Core.counter);
         
          if(Core.counter === fileLocations.length) {
             LogUncompleted();
@@ -112,8 +110,6 @@ function generateNewIndex(file: string[]) {
     });
 
     _fse.writeFile(indexPath, newIndex.join(''), function(err) {
-        //console.log('updated index');
-        //clearVariables();
         newIndex = [];
     });
 
@@ -125,8 +121,6 @@ function fillIncludes(num: number, file: string[]) {
     var j = num;
     var flag: boolean = true;
 
-    //console.log('hello from includes');
-
     while(flag) {
         var y = j + 1;
         if(file[j].includes('search') && file[y].includes('---')) {
@@ -135,18 +129,6 @@ function fillIncludes(num: number, file: string[]) {
         }
         j++;
     }
-
-
-
-    // for (var index = 0; index < fileLocations.length; index++) {
-    //     filesSkipped.forEach(element => {
-    //         if(fileLocations[index].includes(element)) {
-    //             fileLocations.splice(filesSkipped.lastIndexOf(element), 1);
-    //         }
-    //     });
-    // }
-
-
 
     for (var index = num+1; index < x; index++) {
         filesCreated.forEach(element => {
@@ -159,8 +141,6 @@ function fillIncludes(num: number, file: string[]) {
     filesCreated.forEach(element => {
         newIndex.push('\t- ' + element + '\n');
     });
-
-
 }
 
 
@@ -171,12 +151,11 @@ function fillIncludes(num: number, file: string[]) {
 export function createFile(){
     var _fse = require('fs');    
     var tempFile = Core.context.globalState.get('filePath') + '_' + Core.fileName + Core.fileType;
-    //console.log(tempFile);
+   
     _fse.writeFile(tempFile, Core.fileInfo.join('\n'), function(err) {
         if (err) {
             return console.error(err);
         }
-        //console.log("File created!");
     });
 
     Core.fileInfo = [];
