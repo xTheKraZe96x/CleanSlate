@@ -54,13 +54,13 @@ export class ReadWrite {
                 if (hldr.includes('param') && !hldr.includes('/')) {
                     this.parameters(i, array);
                     if(!array[i+1].includes('///')) {
-                        Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '\n\r## ' + array[i+1].substring(0, array[i+1].length - 2));
+                        Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '\n\r## ' + array[i+1].substring(0, array[i+1].indexOf(')') + 1));
                         fcounter++;
                         this.xmlTagCount = 0;
                     }
                 } else if (hldr.includes('/')) {
                     if(!array[i+1].includes('///')) {
-                        Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '\n\r## ' + array[i+1].substring(0, array[i+1].length - 2));
+                        Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '\n\r## ' + array[i+1].substring(0, array[i+1].indexOf(')') + 1));
                         fcounter++;
                         this.xmlTagCount = 0;
                     }
@@ -78,7 +78,7 @@ export class ReadWrite {
                             this.returns(i, array);
                             this.xmlTagCount++;
                             if(!array[i+1].includes('///')) {
-                                Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '\n\r## ' + array[i+1].substring(0, array[i+1].length - 2));
+                                Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '\n\r## ' + array[i+1].substring(0, array[i+1].indexOf(')') + 1));
                                 fcounter++;
                                 this.xmlTagCount = 0;
                             }
@@ -215,14 +215,12 @@ export class ReadWrite {
                         // inline as well
                         var temp = array[i].substr(0, array[i].lastIndexOf('<'));
                         if(currentLine === 0) {
-                            string += array[i].substring(array[i].indexOf('>'), array[i].lastIndexOf('<'));
+                            string += array[i].substring(array[i].indexOf('>') + 1, array[i].lastIndexOf('<'));
                         } else {
                             if (temp !== '</param') {
                                 string += temp.substring(3);
-                            }
-                            
+                            }    
                         }
-
                         currentLine = 0;
                         flag = false;
                     } else {
@@ -376,16 +374,15 @@ export class CleanSlateController {
             activeFile[i] = activeFile[i].replace(/^\s*/g, ''); 
         }
 
-    
         var functions: number = 0;
         var commentedFunc: number = 0;
 
-
         for (var i = 0; i < activeFile.length; i++) {
-            if((activeFile[i].startsWith('private') && activeFile[i].includes(')') && activeFile[i].includes('{') )
-            || (activeFile[i].startsWith('public') && activeFile[i].includes(')') && activeFile[i].includes('{'))
-            || (activeFile[i].startsWith('static') && activeFile[i].includes(')') && activeFile[i].includes('{')) ||
-            (activeFile[i].startsWith('export') && activeFile[i].includes(')') && activeFile[i].includes('{'))) {
+            if((activeFile[i].startsWith('private') || activeFile[i].startsWith('public') || activeFile[i].startsWith('static') 
+            || activeFile[i].startsWith('export') || activeFile[i].startsWith('void') || activeFile[i].startsWith('int') 
+            || activeFile[i].startsWith('bool') || activeFile[i].startsWith('float') || activeFile[i].startsWith('void') || activeFile[i].startsWith('double'))
+            && activeFile[i].includes('(') && activeFile[i].includes(')') && (activeFile[i].includes('{') || activeFile[i+1].includes('{'))) {
+                console.log(activeFile[i]);
                 functions++;
                 
                 if(activeFile[i-1].startsWith('///')) {

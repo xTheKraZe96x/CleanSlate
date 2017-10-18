@@ -125,6 +125,10 @@ export function ParseAndGen(file: string[], i: string) {
                 if(outputString[outputString.length - 1] === undefined) {
                     outputString.pop();
                 }
+                if(!array[x+1].includes('///')) {
+                    outputString[outputString.length - xmlTagCount] = outputString[outputString.length - xmlTagCount].replace(/^#*/g, '\n\r### ' + array[x+1].substring(0, array[x+1].length - 2));
+                    xmlTagCount = 0;
+                }
             } else if (hldr.includes('/')) {
                 if(!array[x+1].includes('///')) {
                     outputString[outputString.length - xmlTagCount] = outputString[outputString.length - xmlTagCount].replace(/^#*/g, '\n\r### ' + array[x+1].substring(0, array[x+1].length - 2));
@@ -144,6 +148,10 @@ export function ParseAndGen(file: string[], i: string) {
                     case "returns": 
                         outputString.push(returns(x, array));
                         xmlTagCount++;
+                        if(!array[x+1].includes('///')) {
+                            outputString[outputString.length - xmlTagCount] = outputString[outputString.length - xmlTagCount].replace(/^#*/g, '\n\r### ' + array[x+1].substring(0, array[x+1].length - 2));
+                            xmlTagCount = 0;
+                        }
                         break;
                     //TODO: Add additional xml comments
                     //      permissions, etc...
