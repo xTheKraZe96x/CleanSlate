@@ -143,8 +143,6 @@ function fillIncludes(num: number, file: string[]) {
     });
 }
 
-
-
 ///<summary>
 /// Generates markdown file.
 ///</summary>

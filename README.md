@@ -22,4 +22,4 @@ The markdown file generated is to be used with [Slate](https://github.com/lord/s
 
 The Source code to this extension is available on [https://github.com/Liftlock/CleanSlate](https://github.com/Liftlock/CleanSlate) and licensed under the [MIT license](https://github.com/Liftlock/CleanSlate/blob/master/LICENSE).
 
-### Developed with love by [LiftLock Studios](http://liftlockstudios.com/)
+### Developed with love by [Liftlock Studios](http://liftlockstudios.com/)
