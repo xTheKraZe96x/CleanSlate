@@ -53,9 +53,7 @@ export function createProjFile(content: string[], fileName: string) {
     var tempFile = Core.context.globalState.get('filePath') + '_' + fileName + Core.fileType;
 
     _fse.writeFile(tempFile, content.join('\n'), function(err) {
-        if (err) {
-            return console.error(err);
-        }
+
         Core.counter++;
         
          if(Core.counter === fileLocations.length) {
@@ -149,13 +147,11 @@ function fillIncludes(num: number, file: string[]) {
 /// Generates markdown file.
 ///</summary>
 export function createFile(){
-    var _fse = require('fs');    
+    var _fse = require('fs'); 
     var tempFile = Core.context.globalState.get('filePath') + '_' + Core.fileName + Core.fileType;
-   
+
     _fse.writeFile(tempFile, Core.fileInfo.join('\n'), function(err) {
-        if (err) {
-            return console.error(err);
-        }
+        window.showInformationMessage('File created at ' + Core.context.globalState.get('filePath'));
     });
 
     Core.fileInfo = [];
@@ -169,8 +165,13 @@ export function createFile(){
 export function setPath(userpath: Uri[]){
     var temp = userpath[0].fsPath;
 
-    if(!temp.endsWith('\\')) {
-        temp += '\\';
+    if(!temp.endsWith('\\') || !temp.endsWith('/')) {
+        if(temp.includes('\\')) {
+            temp += '\\';
+        } else {
+            temp += '/';
+        }
+
     }
 
     Core.context.globalState.update('filePath', temp)

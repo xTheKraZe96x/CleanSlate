@@ -53,6 +53,11 @@ export class ReadWrite {
 
                 if (hldr.includes('param') && !hldr.includes('/')) {
                     this.parameters(i, array);
+                    if(!array[i+1].includes('///')) {
+                        Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '\n\r## ' + array[i+1].substring(0, array[i+1].length - 2));
+                        fcounter++;
+                        this.xmlTagCount = 0;
+                    }
                 } else if (hldr.includes('/')) {
                     if(!array[i+1].includes('///')) {
                         Core.fileInfo[Core.fileInfo.length - this.xmlTagCount] = Core.fileInfo[Core.fileInfo.length - this.xmlTagCount].replace(/^#*/g, '\n\r## ' + array[i+1].substring(0, array[i+1].length - 2));
@@ -262,7 +267,7 @@ export class ReadWrite {
             var j = file[line].lastIndexOf('>');
             var flag = true;
             if (j !== file[line].length) {
-                var temp = file[line].slice(0, file[line].length - 1);
+                var temp = file[line].slice(0, file[line].length);
                 string += temp.substr(j + 1);
             }
 
