@@ -1,14 +1,14 @@
 # **Clean Slate**
 
 ## What does it do?
-Clean Slate grabs XML style commenting tags from 'CSharp' files and exports a markdown document for use with Slate.
+Clean Slate is a VSCode extension that looks for XML style comments in your source code (C# at the moment) and converts them to markdown for use with the Slate API documentation sysrtem. 
 
 ## Get Started with Clean Slate
 - Install and set up [Slate](https://github.com/lord/slate)
 - [Documentation](https://github.com/Liftlock/CleanSlate/wiki)
 
 
-## Current Commands
+## Current Commands (Use the Command Pallet Commands)
 - **CleanSlate Generate** -> Generates the markdown document of  the current file you have open in text editor.
 - **CleanSlate GenerateProj** -> Generates markdown documents for all files in a project.
 - **CleanSlate ChangePath** -> Change path to where you would like to produce markdown document.
@@ -22,4 +22,4 @@ The markdown file generated is to be used with [Slate](https://github.com/lord/s
 
 The Source code to this extension is available on [https://github.com/Liftlock/CleanSlate](https://github.com/Liftlock/CleanSlate) and licensed under the [MIT license](https://github.com/Liftlock/CleanSlate/blob/master/LICENSE).
 
-### Developed by [LiftLock Studios](http://liftlockstudios.com/)
+### Developed with love by [LiftLock Studios](http://liftlockstudios.com/)
