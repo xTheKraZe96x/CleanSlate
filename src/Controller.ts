@@ -339,7 +339,6 @@ export class CleanSlateController {
         this._disposable = Disposable.from(...subscriptions);
     }
 
-
     private showCoverage() {
         let editor = window.activeTextEditor;
     
@@ -359,8 +358,9 @@ export class CleanSlateController {
         this.commentCoverage.show();
     }
 
-
-
+    ///<summary>
+    /// Finds the coverage value, function amount and how many are commented.
+    ///</summary>
     private getCoverage() {
         var retVal: string;
         let editor = window.activeTextEditor;
@@ -382,7 +382,7 @@ export class CleanSlateController {
             || activeFile[i].startsWith('export') || activeFile[i].startsWith('void') || activeFile[i].startsWith('int') 
             || activeFile[i].startsWith('bool') || activeFile[i].startsWith('float') || activeFile[i].startsWith('void') || activeFile[i].startsWith('double'))
             && activeFile[i].includes('(') && activeFile[i].includes(')') && (activeFile[i].includes('{') || activeFile[i+1].includes('{'))) {
-                console.log(activeFile[i]);
+
                 functions++;
                 
                 if(activeFile[i-1].startsWith('///')) {

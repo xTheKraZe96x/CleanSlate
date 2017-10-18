@@ -34,6 +34,7 @@ export function GetCurrFile(){
     var temp =  window.activeTextEditor.document.fileName.toString();
     var i: number = 0;    
     
+    // used to check file system being used.
     if(temp.includes('\\')) {
         i = temp.lastIndexOf('\\');
     } else {

@@ -314,10 +314,8 @@ function parameters(num: number, array: string[]): string {
                     } else {
                         if (temp !== '</param') {
                             string += temp.substring(3);
-                        }
-                        
+                        } 
                     }
-
                     currentLine = 0;
                     flag = false;
                 } else {

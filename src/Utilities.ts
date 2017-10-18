@@ -93,6 +93,8 @@ function readIndex() {
     });
 }
 
+// Used for repopulating the user's current index.
+// Not implemented.
 function generateNewIndex(file: string[]) {
     var i: number = 0;
     var _fse = require('fs');
@@ -113,7 +115,7 @@ function generateNewIndex(file: string[]) {
 
 }
 
-
+// Not implemented yet. 
 function fillIncludes(num: number, file: string[]) {
     var x: number = 0;
     var j = num;
@@ -165,13 +167,13 @@ export function createFile(){
 export function setPath(userpath: Uri[]){
     var temp = userpath[0].fsPath;
 
+    // used to check file system being used.
     if(!temp.endsWith('\\') || !temp.endsWith('/')) {
         if(temp.includes('\\')) {
             temp += '\\';
         } else {
             temp += '/';
         }
-
     }
 
     Core.context.globalState.update('filePath', temp)
