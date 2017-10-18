@@ -1,7 +1,7 @@
 # **Clean Slate**
 
 ## What does it do?
-Clean Slate is a VSCode extension that looks for XML style comments in your source code (C# at the moment) and converts them to markdown for use with the Slate API documentation sysrtem. 
+Clean Slate is a VSCode extension that looks for XML style comments in your source code (C# at the moment) and converts them to markdown for use with the Slate API documentation system. 
 
 ## Get Started with Clean Slate
 - Install and set up [Slate](https://github.com/lord/slate)
