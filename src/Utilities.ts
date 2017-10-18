@@ -53,9 +53,7 @@ export function createProjFile(content: string[], fileName: string) {
     var tempFile = Core.context.globalState.get('filePath') + '_' + fileName + Core.fileType;
 
     _fse.writeFile(tempFile, content.join('\n'), function(err) {
-        if (err) {
-            return console.error(err);
-        }
+
         Core.counter++;
         
          if(Core.counter === fileLocations.length) {
