@@ -32,7 +32,14 @@ export function FilePath() {
 ///</summary>
 export function GetCurrFile(){
     var temp =  window.activeTextEditor.document.fileName.toString();
-    var i = temp.lastIndexOf('\\');
+    var i: number = 0;    
+    
+    if(temp.includes('\\')) {
+        i = temp.lastIndexOf('\\');
+    } else {
+        var i = temp.lastIndexOf('/');
+    }
+
     var j = temp.lastIndexOf('.');
     i++;
     Core.fileName =  window.activeTextEditor.document.fileName.toString().substring(i, j);

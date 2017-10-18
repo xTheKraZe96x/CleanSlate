@@ -262,7 +262,7 @@ export class ReadWrite {
             var j = file[line].lastIndexOf('>');
             var flag = true;
             if (j !== file[line].length) {
-                var temp = file[line].slice(0, file[line].length - 1);
+                var temp = file[line].slice(0, file[line].length);
                 string += temp.substr(j + 1);
             }
 
