@@ -2,7 +2,7 @@
     "name": "cleanslate",
     "displayName": "CleanSlate",
     "description": "Create Markdown files to be used with Slate, in order to make documentation easy.",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "publisher": "LiftlockStudios",
     "icon": "images/Liftlock_128x128.png",
     "engines": {
@@ -11,42 +11,51 @@
     "categories": [
         "Other"
     ],
-	"keywords": [
-		"slate",
-		"LiftLock",
-		"xml",
-		"comment-parsing"
-	],
+    "keywords": [
+        "slate",
+        "LiftLock",
+        "xml",
+        "comment-parsing"
+    ],
     "contributes": {
-        "commands": [{
-            "command": "extension.cleanSlate",
-            "title": "CleanSlate"
-        }, {
-            "command": "extension.cleanSlate-projGen",
-            "title": "CleanSlate GenerateProj"
-        },{
-            "command": "extension.cleanSlate-changepath",
-            "title": "CleanSlate ChangePath"
-        },{
-            "command": "extension.cleanSlate-markdown",
-            "title": "CleanSlate Generate"
-        },{
-            "command": "extension.cleanSlate-showpath",
-            "title": "CleanSlate ShowPath"
-        },{
-            "command": "extension.cleanSlate-hidecoverage",
-            "title": "CleanSlate Hide Comment Coverage"
-        },{
-            "command": "extension.cleanSlate-showcoverage",
-            "title": "CleanSlate Show Comment Coverage"
-        }]
+        "commands": [
+            {
+                "command": "extension.cleanSlate",
+                "title": "CleanSlate"
+            },
+            {
+                "command": "extension.cleanSlate-projGen",
+                "title": "CleanSlate GenerateProj"
+            },
+            {
+                "command": "extension.cleanSlate-changepath",
+                "title": "CleanSlate ChangePath"
+            },
+            {
+                "command": "extension.cleanSlate-markdown",
+                "title": "CleanSlate Generate"
+            },
+            {
+                "command": "extension.cleanSlate-showpath",
+                "title": "CleanSlate ShowPath"
+            },
+            {
+                "command": "extension.cleanSlate-hidecoverage",
+                "title": "CleanSlate Hide Comment Coverage"
+            },
+            {
+                "command": "extension.cleanSlate-showcoverage",
+                "title": "CleanSlate Show Comment Coverage"
+            }
+        ]
     },
     "activationEvents": [
         "onLanguage:csharp"
-    ],"repository": {
-		"type": "git",
-		"url": "https://github.com/Liftlock/CleanSlate"
-	},
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Liftlock/CleanSlate"
+    },
     "main": "./out/extension",
     "scripts": {
         "vscode:prepublish": "npm run compile",
