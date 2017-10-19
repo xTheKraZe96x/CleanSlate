@@ -37,7 +37,7 @@ export function clearVariables() {
 /// Open a dialog box to save the Assembly path.
 ///</summary>
 export function ParseAssembly() {
-    window.showOpenDialog({canSelectFiles: true, openLabel: "Select Assembly File"})
+    window.showOpenDialog({canSelectFiles: true, openLabel: "Select Solution File"})
     .then(path => checkFile(path));
 }
 
@@ -53,8 +53,13 @@ export function ParseAssembly() {
 /// The default path to look within for files.
 ///</param>
 export function AssemblyArray(file: string[], path: string) {
-    var i = path.indexOf('Assembly');
-    var j = 0;
+    var i: number = 0;
+    if(path.includes('/')) {
+        i = path.lastIndexOf('/') + 1;
+    } else {
+        i = path.lastIndexOf('\\') + 1;
+    }
+
     assemblyPath = path.substring(0, i);
 
     file.forEach(element => {
@@ -78,10 +83,10 @@ export function AssemblyArray(file: string[], path: string) {
 /// File path the user selected.
 /// </param>
 function checkFile(path: Uri[]) {
-    if(path[0].fsPath.includes('Assembly')) {
+    if(path[0].fsPath.includes('.sln')) {
         readFile(path[0].fsPath);
     } else {
-        window.showInformationMessage("Assembly File required to generate markdown files.");
+        window.showInformationMessage("Solution File required to generate markdown files.");
     }
 }
 
@@ -386,11 +391,6 @@ function returns(line: number, file: string[]) : string {
 
    return string;
 }
-
-
-
-
-
 
 
 ///<summary>

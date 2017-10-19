@@ -25,7 +25,17 @@ var indexPath: string = 'D:\\GameDev\\extensions\\slate\\source\\index.html.md';
 ///</param>
 export function readFile(path: string){
     var _fse = require('fs');
-    _fse.readFile(path, function (err, data) {
+    var x: number = 0;
+    var newPath: string = '';
+    if(path.includes('/')) {
+        x = path.lastIndexOf('/');
+        newPath = path.substr(0, x) + '/Assembly-CSharp.csproj';
+    } else {
+        x = path.lastIndexOf('\\');   
+        newPath = path.substr(0, x) + '\\Assembly-CSharp.csproj';
+    }
+
+    _fse.readFile(newPath, function (err, data) {
         AssemblyArray(data.toString().split("\n"), path);
     });
 }

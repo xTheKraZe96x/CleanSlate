@@ -5,3 +5,7 @@
 - Added Status bar icon for Generating the current window
 - Added Status bar text for comment coverage.
 - XML Tag support: { summary, param, example+code, returns }
+
+## [Version 1.0.1]
+- Modified GenerateProj
+- Updated the Comment Coverage Algorithm

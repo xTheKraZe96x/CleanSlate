@@ -381,7 +381,7 @@ export class CleanSlateController {
             if((activeFile[i].startsWith('private') || activeFile[i].startsWith('public') || activeFile[i].startsWith('static') 
             || activeFile[i].startsWith('export') || activeFile[i].startsWith('void') || activeFile[i].startsWith('int') 
             || activeFile[i].startsWith('bool') || activeFile[i].startsWith('float') || activeFile[i].startsWith('void') || activeFile[i].startsWith('double'))
-            && activeFile[i].includes('(') && activeFile[i].includes(')') && (activeFile[i].includes('{') || activeFile[i+1].includes('{'))) {
+            && activeFile[i].includes('(') && activeFile[i].includes(')') && (activeFile[i].includes('{') || activeFile[i+1] === '{')) {
 
                 functions++;
                 
