@@ -36,7 +36,6 @@ export class ReadWrite {
         array = docContent.split('\n');
         for (var i = 0; i < array.length; i++) {
             array[i] = array[i].replace(/^\s*/g, '');;
-            
         }
 
         Core.fileInfo.push('# ' + Core.fileName + '\r\n');
