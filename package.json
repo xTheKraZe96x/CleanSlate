@@ -2,9 +2,9 @@
     "name": "cleanslate",
     "displayName": "CleanSlate",
     "description": "Create Markdown files to be used with Slate, in order to make documentation easy.",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "publisher": "LiftlockStudios",
-    "icon": "images/Liftlock_128x128.png",
+    "icon": "images/LiftLock_128x128.png",
     "engines": {
         "vscode": "^1.17.0"
     },
