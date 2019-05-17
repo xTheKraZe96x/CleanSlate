@@ -1,0 +1,73 @@
+{
+    "name": "cleanslate",
+    "displayName": "CleanSlate",
+    "description": "Create Markdown files to be used with Slate, in order to make documentation easy.",
+    "version": "0.3.0",
+    "publisher": "LiftlockStudios",
+    "icon": "images/LiftLock_128x128.png",
+    "engines": {
+        "vscode": "^1.17.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "slate",
+        "LiftLock",
+        "xml",
+        "comment-parsing"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.cleanSlate",
+                "title": "CleanSlate"
+            },
+            {
+                "command": "extension.cleanSlate-projGen",
+                "title": "CleanSlate GenerateProj"
+            },
+            {
+                "command": "extension.cleanSlate-changepath",
+                "title": "CleanSlate ChangePath"
+            },
+            {
+                "command": "extension.cleanSlate-markdown",
+                "title": "CleanSlate Generate"
+            },
+            {
+                "command": "extension.cleanSlate-showpath",
+                "title": "CleanSlate ShowPath"
+            },
+            {
+                "command": "extension.cleanSlate-hidecoverage",
+                "title": "CleanSlate Hide Comment Coverage"
+            },
+            {
+                "command": "extension.cleanSlate-showcoverage",
+                "title": "CleanSlate Show Comment Coverage"
+            }
+        ]
+    },
+    "activationEvents": [
+        "onLanguage:csharp"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Liftlock/CleanSlate"
+    },
+    "main": "./out/extension",
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.5.3",
+        "vscode": "^1.1.5",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42"
+    }
+}
